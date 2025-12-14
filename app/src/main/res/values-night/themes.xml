@@ -1,7 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MyRun" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- MD3 深色主题颜色配置 -->
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_on_tertiary_container</item>
+        <item name="colorSurface">#1C1B1F</item>
+        <item name="colorOnSurface">#E6E1E5</item>
+        <item name="colorSurfaceVariant">#49454F</item>
+        <item name="colorOnSurfaceVariant">#CAC4D0</item>
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+        <item name="colorErrorContainer">@color/md_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_on_error_container</item>
+        <item name="colorOutline">#938F99</item>
+        <item name="colorOutlineVariant">#49454F</item>
+        
+        <!-- 移除不支持的属性 -->
+        <!-- <item name="colorBackground">#1C1B1F</item> -->
+        <!-- <item name="colorOnBackground">#E6E1E5</item> -->
+        <!-- <item name="shapeCornerSmall">4dp</item> -->
+        <!-- <item name="shapeCornerMedium">8dp</item> -->
+        <!-- <item name="shapeCornerLarge">12dp</item> -->
+        <!-- <item name="shapeCornerExtraLarge">16dp</item> -->
+        <!-- <item name="android:fontFamily">@font/roboto</item> -->
     </style>
 </resources>

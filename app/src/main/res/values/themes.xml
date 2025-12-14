@@ -1,9 +1,51 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MyRun" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- MD3 颜色配置 -->
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/md_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/md_on_tertiary_container</item>
+        <item name="colorSurface">@color/md_surface</item>
+        <item name="colorOnSurface">@color/md_on_surface</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant</item>
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+        <item name="colorErrorContainer">@color/md_error_container</item>
+        <item name="colorOnErrorContainer">@color/md_on_error_container</item>
+        <item name="colorOutline">@color/md_outline</item>
+        <item name="colorOutlineVariant">@color/md_outline_variant</item>
+        
+        <!-- 移除不支持的属性 -->
+        <!-- <item name="colorBackground">@color/md_background</item> -->
+        <!-- <item name="colorOnBackground">@color/md_on_surface</item> -->
+        <!-- <item name="shapeCornerSmall">4dp</item> -->
+        <!-- <item name="shapeCornerMedium">8dp</item> -->
+        <!-- <item name="shapeCornerLarge">12dp</item> -->
+        <!-- <item name="shapeCornerExtraLarge">16dp</item> -->
+        <!-- <item name="android:fontFamily">@font/roboto</item> -->
     </style>
 
     <style name="Theme.MyRun" parent="Base.Theme.MyRun" />
+    
+    <!-- Material Design 3 组件样式 -->
+    <style name="Widget.MyRun.Button.Filled" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    
+    <!-- 移除不存在的CardView样式引用 -->
+    <!-- <style name="Widget.MyRun.CardView" parent="Widget.Material3.Card"> -->
+    <!--     <item name="cardElevation">8dp</item> -->
+    <!--     <item name="cardCornerRadius">12dp</item> -->
+    <!-- </style> -->
 </resources>

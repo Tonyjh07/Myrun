@@ -27,6 +27,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My run"
+rootProject.name = "Myrun"
 include(":app")
  

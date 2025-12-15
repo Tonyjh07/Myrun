@@ -93,7 +93,7 @@ public class SlideMenu extends FrameLayout {
         return true;
     }
     //关闭menu
-    private void closeMenu(){
+    public void closeMenu(){
         scroller.startScroll(getScrollX(),0,0-getScrollX(),0,400);
         invalidate();
     }
@@ -127,4 +127,3 @@ public class SlideMenu extends FrameLayout {
     }
 
 }
-

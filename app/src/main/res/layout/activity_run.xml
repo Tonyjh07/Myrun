@@ -7,199 +7,227 @@
     android:background="?attr/colorSurface"
     tools:context=".RunActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- 顶部状态栏 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?attr/colorPrimary"
+        android:padding="16dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="跑步记录"
-            app:titleTextColor="?attr/colorOnPrimary"
-            app:menu="@menu/run_menu" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="跑步中"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:textColor="?attr/colorOnPrimary" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <TextView
+            android:id="@+id/tv_gps_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPS定位中..."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="?attr/colorOnPrimary"
+            android:drawableStart="@drawable/ic_location_on"
+            android:drawablePadding="4dp" />
 
-    <ScrollView
+    </LinearLayout>
+
+    <!-- 地图容器 -->
+    <FrameLayout
+        android:id="@+id/map_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="72dp"
+        android:layout_marginBottom="56dp"
+        android:background="@color/md_primary">
+
+        <!-- 地图占位符 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="地图区域（预留）"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:background="?attr/colorSurfaceVariant" />
+
+        <!-- 当前位置标记 -->
+        <ImageView
+            android:id="@+id/iv_current_location"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_location_on"
+            android:background="@color/colorWhite"
+            android:padding="2dp"
+            android:elevation="8dp" />
+
+    </FrameLayout>
+
+    <!-- 跑步数据面板 -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="?attr/colorSurface">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
-            <!-- 跑步统计卡片 -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- 计时器 -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="?attr/colorSurface">  <!-- 修复：移除不存在的样式，直接设置属性 -->
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="16dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="00:00:00"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 跑步数据统计 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <!-- 距离 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_distance"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:gravity="center"
-                        android:text="今日跑步统计"
-                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                        android:textColor="?attr/colorOnSurface" />
+                        android:text="0.00"
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <!-- 距离统计 -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5.2"
-                                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                                android:textColor="?attr/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="公里"
-                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
-
-                        </LinearLayout>
-
-                        <!-- 时间统计 -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="28:15"
-                                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                                android:textColor="?attr/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="分钟"
-                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
-
-                        </LinearLayout>
-
-                        <!-- 配速统计 -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="8dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5:26"
-                                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                                android:textColor="?attr/colorPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="分/公里"
-                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:text="公里"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 开始跑步按钮 -->
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="开始跑步"
-                android:icon="@drawable/ic_play_arrow"
-                style="@style/Widget.Material3.Button"
-                app:cornerRadius="12dp"
-                app:iconPadding="8dp" />
-
-            <!-- 最近跑步记录 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface">  <!-- 修复：移除不存在的样式，直接设置属性 -->
-
+                <!-- 配速 -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_pace"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="最近跑步记录"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                        android:textColor="?attr/colorOnSurface" />
+                        android:text="--:--"
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
 
-                    <!-- 跑步记录列表 -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_running_records"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:orientation="vertical"
-                        tools:listitem="@layout/item_running_record" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="查看全部记录"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        app:cornerRadius="8dp" />
+                        android:text="分/公里"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                <!-- 卡路里 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_calories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="卡路里"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 控制按钮 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                android:gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_pause"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="暂停"
+                    android:icon="@drawable/ic_pause"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    app:cornerRadius="12dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="结束"
+                    android:icon="@drawable/ic_stop"
+                    style="@style/Widget.Material3.Button"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- 底部导航 -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

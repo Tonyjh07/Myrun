@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
         
         //设置工具栏菜单按钮
         setupToolbar();
+        
+        // 设置导航栏选中状态为首页
+        if (mBottomNavigation != null) {
+            mBottomNavigation.setSelectedItemId(R.id.navigation_home);
+        }
     }
     
     private void setListeners(){

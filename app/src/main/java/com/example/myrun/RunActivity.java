@@ -185,10 +185,11 @@ public class RunActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             
             if (itemId == R.id.navigation_home) {
-                // 切换到主页，不结束跑步
+                // 切换到主页，结束当前跑步活动
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish(); // 结束当前Activity，确保导航栏状态正确更新
                 return true;
             } else if (itemId == R.id.navigation_run) {
                 // 已经在跑步页面，不需要切换

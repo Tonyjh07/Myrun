@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myrun.util.ToastUtil;
+import com.example.myrun.util.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,13 +23,18 @@ public class MainActivity extends AppCompatActivity {
     private SlideMenu slideMenu;
     private MaterialCardView mMenuSettings;
     private MaterialCardView mMenuAbout;
+    private MaterialCardView mMenuLogout;
     private MaterialToolbar mToolbar;
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        
+        // 初始化UserManager
+        userManager = UserManager.getInstance(this);
         
         //找到控件
         mBtnStartRun = findViewById(R.id.btn_start_run);
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         slideMenu = findViewById(R.id.slideMenu);
         mMenuSettings = findViewById(R.id.menu_settings);
         mMenuAbout = findViewById(R.id.menu_about);
+        mMenuLogout = findViewById(R.id.menu_logout);
         mToolbar = findViewById(R.id.toolbar);
 
         //设置点击监听器
@@ -136,6 +144,49 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        
+        if (mMenuLogout != null) {
+            mMenuLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 关闭侧滑菜单
+                    slideMenu.closeMenu();
+                    // 显示退出登录确认对话框
+                    showLogoutDialog();
+                }
+            });
+        }
+    }
+    
+    /**
+     * 显示退出登录确认对话框
+     */
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("退出登录")
+                .setMessage("确定要退出登录吗？")
+                .setPositiveButton("确定", (dialog, which) -> {
+                    logout();
+                })
+                .setNegativeButton("取消", null)
+                .show();
+    }
+
+    /**
+     * 执行退出登录操作
+     */
+    private void logout() {
+        // 调用UserManager退出登录
+        userManager.logout();
+        
+        // 显示提示信息
+        ToastUtil.showMsg(this, "已退出登录");
+        
+        // 跳转到登录页面，并清除Activity栈
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
     
     // 处理返回键，如果侧滑菜单打开则先关闭菜单

@@ -28,6 +28,10 @@ public class MyActivity extends AppCompatActivity {
     private MaterialCardView mMenuSettings;
     private MaterialCardView mMenuAbout;
     private MaterialCardView mMenuLogout;
+    private SlideMenu slideMenu;
+    private MaterialCardView mSlideMenuSettings;
+    private MaterialCardView mSlideMenuAbout;
+    private MaterialCardView mSlideMenuLogout;
     private UserManager userManager;
 
     @Override
@@ -59,6 +63,9 @@ public class MyActivity extends AppCompatActivity {
         
         // 设置菜单点击事件
         setupMenuListeners();
+        
+        // 设置侧滑菜单监听器
+        setupSlideMenu();
     }
     
     /**
@@ -66,14 +73,23 @@ public class MyActivity extends AppCompatActivity {
      */
     private void initViews() {
         mToolbar = findViewById(R.id.toolbar);
+        slideMenu = findViewById(R.id.slideMenu);
         mTvUsername = findViewById(R.id.tv_username);
         mTvUserInfo = findViewById(R.id.tv_user_info);
         mTvTotalRuns = findViewById(R.id.tv_total_runs);
         mTvTotalDistance = findViewById(R.id.tv_total_distance);
         mTvTotalTime = findViewById(R.id.tv_total_time);
+        // 主界面菜单项
         mMenuSettings = findViewById(R.id.menu_settings);
         mMenuAbout = findViewById(R.id.menu_about);
         mMenuLogout = findViewById(R.id.menu_logout);
+        // 侧边栏菜单项（通过slideMenu的第一个子视图查找）
+        if (slideMenu != null && slideMenu.getChildCount() > 0) {
+            View menuView = slideMenu.getChildAt(0);
+            mSlideMenuSettings = menuView.findViewById(R.id.menu_settings);
+            mSlideMenuAbout = menuView.findViewById(R.id.menu_about);
+            mSlideMenuLogout = menuView.findViewById(R.id.menu_logout);
+        }
     }
     
     /**
@@ -110,7 +126,10 @@ public class MyActivity extends AppCompatActivity {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    // 打开侧滑菜单
+                    if (slideMenu != null) {
+                        slideMenu.switchMenu();
+                    }
                 }
             });
         }
@@ -166,6 +185,68 @@ public class MyActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("取消", null)
                 .show();
+    }
+
+    /**
+     * 设置侧滑菜单监听器
+     */
+    private void setupSlideMenu() {
+        // 设置侧边栏菜单项点击事件
+        if (mSlideMenuSettings != null) {
+            mSlideMenuSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 跳转到设置页面
+                    Intent settingsIntent = new Intent(MyActivity.this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                    // 关闭侧滑菜单
+                    if (slideMenu != null) {
+                        slideMenu.closeMenu();
+                    }
+                }
+            });
+        }
+        
+        if (mSlideMenuAbout != null) {
+            mSlideMenuAbout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 跳转到关于页面
+                    Intent aboutIntent = new Intent(MyActivity.this, AboutActivity.class);
+                    startActivity(aboutIntent);
+                    // 关闭侧滑菜单
+                    if (slideMenu != null) {
+                        slideMenu.closeMenu();
+                    }
+                }
+            });
+        }
+        
+        if (mSlideMenuLogout != null) {
+            mSlideMenuLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 关闭侧滑菜单
+                    if (slideMenu != null) {
+                        slideMenu.closeMenu();
+                    }
+                    // 显示退出登录确认对话框
+                    showLogoutDialog();
+                }
+            });
+        }
+    }
+    
+    /**
+     * 处理返回键，如果侧滑菜单打开则先关闭菜单
+     */
+    @Override
+    public void onBackPressed() {
+        if (slideMenu != null && slideMenu.getScrollX() < 0) {
+            slideMenu.closeMenu();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**

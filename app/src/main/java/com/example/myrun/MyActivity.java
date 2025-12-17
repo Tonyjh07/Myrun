@@ -72,23 +72,28 @@ public class MyActivity extends AppCompatActivity {
      * 初始化控件
      */
     private void initViews() {
-        mToolbar = findViewById(R.id.toolbar);
         slideMenu = findViewById(R.id.slideMenu);
+        mToolbar = findViewById(R.id.toolbar);
         mTvUsername = findViewById(R.id.tv_username);
         mTvUserInfo = findViewById(R.id.tv_user_info);
         mTvTotalRuns = findViewById(R.id.tv_total_runs);
         mTvTotalDistance = findViewById(R.id.tv_total_distance);
         mTvTotalTime = findViewById(R.id.tv_total_time);
-        // 主界面菜单项
-        mMenuSettings = findViewById(R.id.menu_settings);
-        mMenuAbout = findViewById(R.id.menu_about);
-        mMenuLogout = findViewById(R.id.menu_logout);
+        
         // 侧边栏菜单项（通过slideMenu的第一个子视图查找）
         if (slideMenu != null && slideMenu.getChildCount() > 0) {
             View menuView = slideMenu.getChildAt(0);
             mSlideMenuSettings = menuView.findViewById(R.id.menu_settings);
             mSlideMenuAbout = menuView.findViewById(R.id.menu_about);
             mSlideMenuLogout = menuView.findViewById(R.id.menu_logout);
+        }
+        
+        // 主界面菜单项（通过slideMenu的第二个子视图查找）
+        if (slideMenu != null && slideMenu.getChildCount() > 1) {
+            View mainView = slideMenu.getChildAt(1);
+            mMenuSettings = mainView.findViewById(R.id.menu_settings);
+            mMenuAbout = mainView.findViewById(R.id.menu_about);
+            mMenuLogout = mainView.findViewById(R.id.menu_logout);
         }
     }
     

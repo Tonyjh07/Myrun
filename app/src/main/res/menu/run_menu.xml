@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:id="@+id/action_history"
+        android:title="历史记录"
+        android:icon="@drawable/ic_history"
+        app:showAsAction="ifRoom" />
+        
+    <item
+        android:id="@+id/action_statistics"
+        android:title="统计"
+        android:icon="@drawable/ic_statistics"
+        app:showAsAction="ifRoom" />
+        
+    <item
+        android:id="@+id/action_export"
+        android:title="导出数据"
+        app:showAsAction="never" />
+</menu>

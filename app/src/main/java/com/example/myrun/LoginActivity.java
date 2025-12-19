@@ -2,24 +2,25 @@ package com.example.myrun;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myrun.util.ToastUtil;
+import com.example.myrun.util.UserManager;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
 
     //声明控件
-    private Button mBtnLogin;
-    private EditText mEtUser;
-    private EditText mEtPassword;
+    private MaterialButton mBtnLogin;
+    private MaterialButton mBtnRegister;
+    private TextInputEditText mEtUser;
+    private TextInputEditText mEtPassword;
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,38 +28,66 @@ public class LoginActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         
+        // 初始化UserManager
+        userManager = UserManager.getInstance(this);
+        
         //找到控件
         mBtnLogin = findViewById(R.id.btn_login);
+        mBtnRegister = findViewById(R.id.btn_register);
         mEtUser = findViewById(R.id.et_username);
         mEtPassword = findViewById(R.id.et_password);
 
-        //匹配对应的用户名和密码才能进行登录操作
-        mBtnLogin.setOnClickListener(this::onClick);
+        //设置点击监听器
+        mBtnLogin.setOnClickListener(this::onLoginClick);
+        mBtnRegister.setOnClickListener(this::onRegisterClick);
+
+        // 检查是否已登录，如果已登录则直接跳转到主页面
+        if (userManager.isLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
     
-    public void onClick(View v)
+    /**
+     * 登录按钮点击事件
+     */
+    public void onLoginClick(View v)
     {
         //需要获取输入的用户名和密码
-        String username=mEtUser.getText().toString();
-        String password=mEtPassword.getText().toString();
-        //弹出的内容设置
-        String ok="登录成功!";
-        String fail="用户名或密码有误，请重新登录";
-        Intent intent = null;
+        String username = mEtUser.getText().toString().trim();
+        String password = mEtPassword.getText().toString();
 
-        //假设账号wbh，密码123456
-        if(username.equals("wbh")&&password.equals("123456"))
-        {
-            //封装好的类
-            ToastUtil.showMsg(LoginActivity.this,ok);
+        // 输入验证
+        if (TextUtils.isEmpty(username)) {
+            ToastUtil.showMsg(LoginActivity.this, "请输入用户名");
+            mEtUser.requestFocus();
+            return;
+        }
 
-            //如果正确进行跳转
-            intent=new Intent(LoginActivity.this, MainActivity.class);
+        if (TextUtils.isEmpty(password)) {
+            ToastUtil.showMsg(LoginActivity.this, "请输入密码");
+            mEtPassword.requestFocus();
+            return;
+        }
+
+        // 使用UserManager验证用户
+        if (userManager.loginUser(username, password)) {
+            ToastUtil.showMsg(LoginActivity.this, "登录成功！");
+            // 如果正确进行跳转
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            finish(); // 关闭登录页面
+        } else {
+            ToastUtil.showMsg(LoginActivity.this, "用户名或密码有误，请重新登录");
         }
-        else
-        {
-            ToastUtil.showMsg(LoginActivity.this,fail);
-        }
+    }
+
+    /**
+     * 注册按钮点击事件
+     */
+    private void onRegisterClick(View v) {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 }

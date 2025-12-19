@@ -68,7 +68,9 @@ public class SlideActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent intent = null;
             if(v.getId() == R.id.btn_main_1){
-                intent = new Intent(SlideActivity.this,RunActivity.class);
+                // 跳转到主界面并切换到跑步Fragment
+                intent = new Intent(SlideActivity.this, MainActivity.class);
+                intent.putExtra("fragment", "run");
                 startActivity(intent);
             }
             else if(v.getId() == R.id.btn_main_2){
@@ -76,11 +78,15 @@ public class SlideActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if(v.getId() == R.id.btn_main_3){
-                intent = new Intent(SlideActivity.this,RankingListActivity.class);
+                // 跳转到主界面并切换到排行榜Fragment
+                intent = new Intent(SlideActivity.this, MainActivity.class);
+                intent.putExtra("fragment", "ranking");
                 startActivity(intent);
             }
             else if(v.getId() == R.id.btn_main_4){
-                intent = new Intent(SlideActivity.this,MyActivity.class);
+                // 跳转到主界面并切换到个人中心Fragment
+                intent = new Intent(SlideActivity.this, MainActivity.class);
+                intent.putExtra("fragment", "profile");
                 startActivity(intent);
             }
 

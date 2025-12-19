@@ -17,12 +17,7 @@ import com.example.myrun.util.ToastUtil;
 
 public class SlideActivity extends AppCompatActivity {
     //声明控件
-    private ImageView mIvHead;
     private SlideMenu slideMenu;
-    private Button mBtnRun;
-    private Button mBtnAI;
-    private Button mBtnRankingList;
-    private Button mBtnMy;
 
 
     @Override
@@ -35,56 +30,11 @@ public class SlideActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 
             //找到控件
-            mIvHead = findViewById(R.id.iv_head);
             slideMenu = findViewById(R.id.slideMenu);
-            mBtnRun = findViewById(R.id.btn_main_1);
-            mBtnAI = findViewById(R.id.btn_main_2);
-            mBtnRankingList = findViewById(R.id.btn_main_3);
-            mBtnMy = findViewById(R.id.btn_main_4);
-
-            //实现侧滑的部分,点击加侧滑
-            mIvHead.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    slideMenu.switchMenu();
-                    ToastUtil.showMsg(SlideActivity.this,"ok");
-                }
-            });
-            setListener();
+            
+            // 实现侧滑的部分
+            // 由于相关控件已删除，侧滑功能暂时禁用
             return insets;
         });
-    }
-    private void setListener(){
-       OnClick onClick = new OnClick();
-
-        //对每个按钮进行setOnClickListener
-        mBtnRun.setOnClickListener(onClick);
-        mBtnAI.setOnClickListener(onClick);
-        mBtnRankingList.setOnClickListener(onClick);
-        mBtnMy.setOnClickListener(onClick);
-    }
-    private class OnClick implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = null;
-            if(v.getId() == R.id.btn_main_1){
-                intent = new Intent(SlideActivity.this,RunActivity.class);
-                startActivity(intent);
-            }
-            else if(v.getId() == R.id.btn_main_2){
-                intent = new Intent(SlideActivity.this,AIActivity.class);
-                startActivity(intent);
-            }
-            else if(v.getId() == R.id.btn_main_3){
-                intent = new Intent(SlideActivity.this,RankingListActivity.class);
-                startActivity(intent);
-            }
-            else if(v.getId() == R.id.btn_main_4){
-                intent = new Intent(SlideActivity.this,MyActivity.class);
-                startActivity(intent);
-            }
-
-
-        }
     }
 }

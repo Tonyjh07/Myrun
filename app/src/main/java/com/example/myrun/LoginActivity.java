@@ -2,24 +2,25 @@ package com.example.myrun;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myrun.util.ToastUtil;
 import com.example.myrun.util.UserManager;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
 
     //声明控件
-    private MaterialButton mBtnLogin;
-    private MaterialButton mBtnRegister;
-    private TextInputEditText mEtUser;
-    private TextInputEditText mEtPassword;
+    private Button mBtnLogin;
+    private EditText mEtUser;
+    private EditText mEtPassword;
     private UserManager userManager;
 
     @Override
@@ -33,61 +34,59 @@ public class LoginActivity extends AppCompatActivity {
         
         //找到控件
         mBtnLogin = findViewById(R.id.btn_login);
-        mBtnRegister = findViewById(R.id.btn_register);
         mEtUser = findViewById(R.id.et_username);
         mEtPassword = findViewById(R.id.et_password);
 
-        //设置点击监听器
-        mBtnLogin.setOnClickListener(this::onLoginClick);
-        mBtnRegister.setOnClickListener(this::onRegisterClick);
-
-        // 检查是否已登录，如果已登录则直接跳转到主页面
-        if (userManager.isLoggedIn()) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        //匹配对应的用户名和密码才能进行登录操作
+        mBtnLogin.setOnClickListener(this::onClick);
+        
+        // 设置注册按钮点击事件
+        Button btnRegister = findViewById(R.id.btn_register);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     
-    /**
-     * 登录按钮点击事件
-     */
-    public void onLoginClick(View v)
+    public void onClick(View v)
     {
         //需要获取输入的用户名和密码
-        String username = mEtUser.getText().toString().trim();
-        String password = mEtPassword.getText().toString();
-
-        // 输入验证
-        if (TextUtils.isEmpty(username)) {
+        String username=mEtUser.getText().toString().trim();
+        String password=mEtPassword.getText().toString().trim();
+        
+        // 验证输入
+        if (username.isEmpty()) {
             ToastUtil.showMsg(LoginActivity.this, "请输入用户名");
-            mEtUser.requestFocus();
             return;
         }
-
-        if (TextUtils.isEmpty(password)) {
+        
+        if (password.isEmpty()) {
             ToastUtil.showMsg(LoginActivity.this, "请输入密码");
-            mEtPassword.requestFocus();
             return;
         }
+        
+        //弹出的内容设置
+        String ok="登录成功!";
+        String fail="用户名或密码有误，请重新登录";
+        Intent intent = null;
 
-        // 使用UserManager验证用户
-        if (userManager.loginUser(username, password)) {
-            ToastUtil.showMsg(LoginActivity.this, "登录成功！");
-            // 如果正确进行跳转
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        // 使用UserManager进行登录验证
+        if(userManager.login(username, password))
+        {
+            //封装好的类
+            ToastUtil.showMsg(LoginActivity.this,ok);
+
+            //如果正确进行跳转
+            intent=new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish(); // 关闭登录页面
-        } else {
-            ToastUtil.showMsg(LoginActivity.this, "用户名或密码有误，请重新登录");
         }
-    }
-
-    /**
-     * 注册按钮点击事件
-     */
-    private void onRegisterClick(View v) {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        startActivity(intent);
+        else
+        {
+            ToastUtil.showMsg(LoginActivity.this,fail);
+        }
     }
 }

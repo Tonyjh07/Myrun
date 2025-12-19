@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton mBtnViewRecords;
     private BottomNavigationView mBottomNavigation;
     private SlideMenu slideMenu;
-    private MaterialCardView mMenuSettings;
-    private MaterialCardView mMenuAbout;
     private MaterialToolbar mToolbar;
     
     // Fragment相关
@@ -44,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         mBtnViewRecords = findViewById(R.id.btn_view_records);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         slideMenu = findViewById(R.id.slideMenu);
-        mMenuSettings = findViewById(R.id.menu_settings);
-        mMenuAbout = findViewById(R.id.menu_about);
         mToolbar = findViewById(R.id.toolbar);
 
         // 初始化Fragment
@@ -58,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigation();
         
         //设置侧滑菜单监听器
-        setupSlideMenu();
+        // setupSlideMenu(); // 注释掉，因为相关控件已删除
         
         //设置工具栏菜单按钮
         setupToolbar();
@@ -155,34 +151,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     
-    private void setupSlideMenu() {
-        // 设置菜单项点击事件
-        if (mMenuSettings != null) {
-            mMenuSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 跳转到设置页面
-                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(settingsIntent);
-                    // 关闭侧滑菜单
-                    slideMenu.closeMenu();
-                }
-            });
-        }
-        
-        if (mMenuAbout != null) {
-            mMenuAbout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 跳转到关于页面
-                    Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(aboutIntent);
-                    // 关闭侧滑菜单
-                    slideMenu.closeMenu();
-                }
-            });
-        }
-    }
+    // setupSlideMenu()方法已删除，因为相关控件已不存在
     
     // 处理返回键，如果侧滑菜单打开则先关闭菜单
     @Override

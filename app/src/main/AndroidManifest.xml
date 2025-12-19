@@ -12,22 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyRun">
         <activity
-            android:name=".MyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RankingListActivity"
-            android:exported="false" />
-        <activity
             android:name=".AIActivity"
             android:exported="false" />
         <activity
             android:name=".SlideActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".RunActivity"
             android:exported="false" />
         <activity
-            android:name=".RunActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"

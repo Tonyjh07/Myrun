@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,14 +15,12 @@ import com.example.myrun.util.ToastUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.card.MaterialCardView;
 
 public class MainActivity extends AppCompatActivity {
     //声明控件
     private MaterialButton mBtnStartRun;
     private MaterialButton mBtnViewRecords;
     private BottomNavigationView mBottomNavigation;
-    private SlideMenu slideMenu;
     private MaterialToolbar mToolbar;
     
     // Fragment相关
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         mBtnStartRun = findViewById(R.id.btn_start_run);
         mBtnViewRecords = findViewById(R.id.btn_view_records);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
-        slideMenu = findViewById(R.id.slideMenu);
         mToolbar = findViewById(R.id.toolbar);
 
         // 初始化Fragment
@@ -53,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
         //设置底部导航监听器
         setupBottomNavigation();
         
-        //设置侧滑菜单监听器
-        // setupSlideMenu(); // 注释掉，因为相关控件已删除
-        
-        //设置工具栏菜单按钮
+        //设置工具栏
         setupToolbar();
+        
+        // 设置返回键处理
+        setupBackPressedHandler();
         
         // 检查是否有从SlideActivity传递过来的Fragment切换参数
         handleIntentFragment();
@@ -72,27 +70,45 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("fragment")) {
             String fragmentType = intent.getStringExtra("fragment");
-            switch (fragmentType) {
-                case "run":
-                    switchFragment(runFragment);
-                    updateToolbarTitle("跑步");
-                    mBottomNavigation.setSelectedItemId(R.id.navigation_run);
-                    break;
-                case "ranking":
-                    switchFragment(rankingFragment);
-                    updateToolbarTitle("排行榜");
-                    mBottomNavigation.setSelectedItemId(R.id.navigation_ranking);
-                    break;
-                case "profile":
-                    switchFragment(profileFragment);
-                    updateToolbarTitle("个人中心");
-                    mBottomNavigation.setSelectedItemId(R.id.navigation_profile);
-                    break;
-                default:
-                    switchFragment(homeFragment);
-                    updateToolbarTitle("跑步记录");
-                    mBottomNavigation.setSelectedItemId(R.id.navigation_home);
-                    break;
+            if (fragmentType != null) {
+                switch (fragmentType) {
+                    case "run":
+                        if (runFragment != null) {
+                            switchFragment(runFragment);
+                            updateToolbarTitle("跑步");
+                            if (mBottomNavigation != null) {
+                                mBottomNavigation.setSelectedItemId(R.id.navigation_run);
+                            }
+                        }
+                        break;
+                    case "ranking":
+                        if (rankingFragment != null) {
+                            switchFragment(rankingFragment);
+                            updateToolbarTitle("排行榜");
+                            if (mBottomNavigation != null) {
+                                mBottomNavigation.setSelectedItemId(R.id.navigation_ranking);
+                            }
+                        }
+                        break;
+                    case "profile":
+                        if (profileFragment != null) {
+                            switchFragment(profileFragment);
+                            updateToolbarTitle("个人中心");
+                            if (mBottomNavigation != null) {
+                                mBottomNavigation.setSelectedItemId(R.id.navigation_profile);
+                            }
+                        }
+                        break;
+                    default:
+                        if (homeFragment != null) {
+                            switchFragment(homeFragment);
+                            updateToolbarTitle("跑步记录");
+                            if (mBottomNavigation != null) {
+                                mBottomNavigation.setSelectedItemId(R.id.navigation_home);
+                            }
+                        }
+                        break;
+                }
             }
         }
     }
@@ -153,27 +169,23 @@ public class MainActivity extends AppCompatActivity {
     
     // setupSlideMenu()方法已删除，因为相关控件已不存在
     
-    // 处理返回键，如果侧滑菜单打开则先关闭菜单
-    @Override
-    public void onBackPressed() {
-        if (slideMenu != null && slideMenu.getScrollX() < 0) {
-            slideMenu.closeMenu();
-        } else {
-            super.onBackPressed();
-        }
+    /**
+     * 设置返回键处理
+     */
+    private void setupBackPressedHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // 执行默认的返回操作
+                finish();
+            }
+        });
     }
     
     private void setupToolbar() {
+        // 工具栏设置（如果需要可以添加其他功能）
         if (mToolbar != null) {
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 打开侧滑菜单
-                    if (slideMenu != null) {
-                        slideMenu.switchMenu();
-                    }
-                }
-            });
+            // 可以在这里添加工具栏的其他功能
         }
     }
     
@@ -199,13 +211,25 @@ public class MainActivity extends AppCompatActivity {
      * 切换Fragment
      */
     private void switchFragment(Fragment fragment) {
+        if (fragment == null || fragmentManager == null) {
+            return;
+        }
+        
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         
         // 隐藏所有Fragment
-        if (homeFragment.isAdded()) transaction.hide(homeFragment);
-        if (runFragment.isAdded()) transaction.hide(runFragment);
-        if (rankingFragment.isAdded()) transaction.hide(rankingFragment);
-        if (profileFragment.isAdded()) transaction.hide(profileFragment);
+        if (homeFragment != null && homeFragment.isAdded()) {
+            transaction.hide(homeFragment);
+        }
+        if (runFragment != null && runFragment.isAdded()) {
+            transaction.hide(runFragment);
+        }
+        if (rankingFragment != null && rankingFragment.isAdded()) {
+            transaction.hide(rankingFragment);
+        }
+        if (profileFragment != null && profileFragment.isAdded()) {
+            transaction.hide(profileFragment);
+        }
         
         // 显示目标Fragment
         if (!fragment.isAdded()) {
@@ -228,8 +252,12 @@ public class MainActivity extends AppCompatActivity {
     
     // 提供给HomeFragment调用的方法，切换到跑步界面
     public void switchToRunFragment() {
-        switchFragment(runFragment);
-        updateToolbarTitle("跑步中");
-        mBottomNavigation.setSelectedItemId(R.id.navigation_run);
+        if (runFragment != null) {
+            switchFragment(runFragment);
+            updateToolbarTitle("跑步中");
+            if (mBottomNavigation != null) {
+                mBottomNavigation.setSelectedItemId(R.id.navigation_run);
+            }
+        }
     }
 }

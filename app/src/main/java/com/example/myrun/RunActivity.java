@@ -46,8 +46,12 @@ public class RunActivity extends AppCompatActivity {
     }
     
     private void setupClickListeners() {
-        btnPause.setOnClickListener(v -> togglePauseResume());
-        btnStop.setOnClickListener(v -> stopRunning());
+        if (btnPause != null) {
+            btnPause.setOnClickListener(v -> togglePauseResume());
+        }
+        if (btnStop != null) {
+            btnStop.setOnClickListener(v -> stopRunning());
+        }
     }
     
     private void initTimer() {
@@ -63,7 +67,9 @@ public class RunActivity extends AppCompatActivity {
                     secs = secs % 60;
                     mins = mins % 60;
                     
-                    tvTimer.setText(String.format("%02d:%02d:%02d", hours, mins, secs));
+                    if (tvTimer != null) {
+                        tvTimer.setText(String.format("%02d:%02d:%02d", hours, mins, secs));
+                    }
                     
                     // 更新跑步数据
                     updateRunningData(secs);
@@ -78,8 +84,12 @@ public class RunActivity extends AppCompatActivity {
         if (!isRunning) {
             isRunning = true;
             startTime = SystemClock.uptimeMillis();
-            handler.postDelayed(timerRunnable, 0);
-            btnPause.setText("暂停");
+            if (timerRunnable != null) {
+                handler.postDelayed(timerRunnable, 0);
+            }
+            if (btnPause != null) {
+                btnPause.setText("暂停");
+            }
         }
     }
     
@@ -88,20 +98,30 @@ public class RunActivity extends AppCompatActivity {
             // 暂停
             isRunning = false;
             timeSwapBuff += timeInMilliseconds;
-            handler.removeCallbacks(timerRunnable);
-            btnPause.setText("继续");
+            if (timerRunnable != null) {
+                handler.removeCallbacks(timerRunnable);
+            }
+            if (btnPause != null) {
+                btnPause.setText("继续");
+            }
         } else {
             // 继续
             isRunning = true;
             startTime = SystemClock.uptimeMillis();
-            handler.postDelayed(timerRunnable, 0);
-            btnPause.setText("暂停");
+            if (timerRunnable != null) {
+                handler.postDelayed(timerRunnable, 0);
+            }
+            if (btnPause != null) {
+                btnPause.setText("暂停");
+            }
         }
     }
     
     private void stopRunning() {
         isRunning = false;
-        handler.removeCallbacks(timerRunnable);
+        if (timerRunnable != null) {
+            handler.removeCallbacks(timerRunnable);
+        }
         
         // 更新跑步数据
         updateRunningData((int) (updatedTime / 1000));
@@ -118,10 +138,13 @@ public class RunActivity extends AppCompatActivity {
     private void updateRunningData(int seconds) {
         // 模拟距离计算（每秒增加0.002公里，约7.2公里/小时的速度）
         double distance = seconds * 0.002;
-        tvDistance.setText(String.format("%.2f", distance));
+        
+        if (tvDistance != null) {
+            tvDistance.setText(String.format("%.2f", distance));
+        }
         
         // 计算配速（分/公里）
-        if (distance > 0) {
+        if (distance > 0 && tvPace != null) {
             double paceMinutes = seconds / 60.0 / distance;
             int paceMin = (int) paceMinutes;
             int paceSec = (int) ((paceMinutes - paceMin) * 60);
@@ -129,7 +152,9 @@ public class RunActivity extends AppCompatActivity {
         }
         
         // 计算卡路里（约60卡/公里）
-        int calories = (int) (distance * 60);
-        tvCalories.setText(String.valueOf(calories));
+        if (tvCalories != null) {
+            int calories = (int) (distance * 60);
+            tvCalories.setText(String.valueOf(calories));
+        }
     }
 }

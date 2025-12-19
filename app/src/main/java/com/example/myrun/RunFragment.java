@@ -31,11 +31,15 @@ public class RunFragment extends Fragment {
         btnStartRun = view.findViewById(R.id.btn_start_run);
         
         // 设置按钮点击监听器
-        btnStartRun.setOnClickListener(v -> startRunActivity());
+        if (btnStartRun != null) {
+            btnStartRun.setOnClickListener(v -> startRunActivity());
+        }
     }
     
     private void startRunActivity() {
-        Intent intent = new Intent(getActivity(), RunActivity.class);
-        startActivity(intent);
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), RunActivity.class);
+            startActivity(intent);
+        }
     }
 }

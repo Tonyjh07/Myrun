@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -66,6 +67,9 @@ public class MyActivity extends AppCompatActivity {
         
         // 设置侧滑菜单监听器
         setupSlideMenu();
+        
+        // 设置返回键处理
+        setupBackPressedHandler();
     }
     
     /**
@@ -101,13 +105,15 @@ public class MyActivity extends AppCompatActivity {
      * 设置用户信息
      */
     private void setupUserInfo() {
-        String username = userManager.getCurrentUser();
-        if (username != null) {
-            mTvUsername.setText(username);
-            mTvUserInfo.setText("跑步爱好者");
-        } else {
-            mTvUsername.setText("未登录");
-            mTvUserInfo.setText("请先登录");
+        if (mTvUsername != null && mTvUserInfo != null) {
+            String username = userManager.getCurrentUsername();
+            if (username != null && !username.isEmpty()) {
+                mTvUsername.setText(username);
+                mTvUserInfo.setText("跑步爱好者");
+            } else {
+                mTvUsername.setText("未登录");
+                mTvUserInfo.setText("请先登录");
+            }
         }
     }
     
@@ -243,15 +249,21 @@ public class MyActivity extends AppCompatActivity {
     }
     
     /**
-     * 处理返回键，如果侧滑菜单打开则先关闭菜单
+     * 设置返回键处理
      */
-    @Override
-    public void onBackPressed() {
-        if (slideMenu != null && slideMenu.getScrollX() < 0) {
-            slideMenu.closeMenu();
-        } else {
-            super.onBackPressed();
-        }
+    private void setupBackPressedHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // 如果侧滑菜单打开则先关闭菜单
+                if (slideMenu != null && slideMenu.getScrollX() < 0) {
+                    slideMenu.closeMenu();
+                } else {
+                    // 否则执行默认的返回操作
+                    finish();
+                }
+            }
+        });
     }
 
     /**

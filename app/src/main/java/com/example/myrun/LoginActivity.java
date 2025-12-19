@@ -38,24 +38,41 @@ public class LoginActivity extends AppCompatActivity {
         mEtPassword = findViewById(R.id.et_password);
 
         //匹配对应的用户名和密码才能进行登录操作
-        mBtnLogin.setOnClickListener(this::onClick);
+        if (mBtnLogin != null) {
+            mBtnLogin.setOnClickListener(this::onClick);
+        }
         
         // 设置注册按钮点击事件
         Button btnRegister = findViewById(R.id.btn_register);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+        if (btnRegister != null) {
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        
+        // 检查是否有从注册页面传递过来的用户名
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("username")) {
+            String username = intent.getStringExtra("username");
+            if (mEtUser != null && username != null) {
+                mEtUser.setText(username);
             }
-        });
+        }
     }
     
     public void onClick(View v)
     {
+        if (mEtUser == null || mEtPassword == null || userManager == null) {
+            return;
+        }
+        
         //需要获取输入的用户名和密码
-        String username=mEtUser.getText().toString().trim();
-        String password=mEtPassword.getText().toString().trim();
+        String username = mEtUser.getText().toString().trim();
+        String password = mEtPassword.getText().toString().trim();
         
         // 验证输入
         if (username.isEmpty()) {
@@ -69,24 +86,20 @@ public class LoginActivity extends AppCompatActivity {
         }
         
         //弹出的内容设置
-        String ok="登录成功!";
-        String fail="用户名或密码有误，请重新登录";
-        Intent intent = null;
+        String ok = "登录成功!";
+        String fail = "用户名或密码有误，请重新登录";
 
         // 使用UserManager进行登录验证
-        if(userManager.login(username, password))
-        {
+        if (userManager.login(username, password)) {
             //封装好的类
-            ToastUtil.showMsg(LoginActivity.this,ok);
+            ToastUtil.showMsg(LoginActivity.this, ok);
 
             //如果正确进行跳转
-            intent=new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish(); // 关闭登录页面
-        }
-        else
-        {
-            ToastUtil.showMsg(LoginActivity.this,fail);
+        } else {
+            ToastUtil.showMsg(LoginActivity.this, fail);
         }
     }
 }

@@ -53,22 +53,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
     
     private void setupListeners() {
-        mBtnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        if (mBtnRegister != null) {
+            mBtnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    registerUser();
+                }
+            });
+        }
         
-        mBtnBackToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToLogin();
-            }
-        });
+        if (mBtnBackToLogin != null) {
+            mBtnBackToLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    backToLogin();
+                }
+            });
+        }
     }
     
     private void registerUser() {
+        if (mEtUsername == null || mEtPassword == null || mEtConfirmPassword == null || userManager == null) {
+            return;
+        }
+        
         String username = mEtUsername.getText().toString().trim();
         String password = mEtPassword.getText().toString().trim();
         String confirmPassword = mEtConfirmPassword.getText().toString().trim();
@@ -94,6 +102,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         
+        // 检查密码长度
+        if (password.length() < 6) {
+            ToastUtil.showMsg(this, "密码长度至少6位");
+            return;
+        }
+        
         // 注册用户
         boolean success = userManager.register(username, password);
         
@@ -101,10 +115,12 @@ public class RegisterActivity extends AppCompatActivity {
             ToastUtil.showMsg(this, "注册成功！");
             // 注册成功后跳转到登录页面
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            // 传递用户名到登录页面，方便用户
+            intent.putExtra("username", username);
             startActivity(intent);
             finish();
         } else {
-            ToastUtil.showMsg(this, "注册失败，请重试");
+            ToastUtil.showMsg(this, "注册失败，用户名已存在");
         }
     }
     

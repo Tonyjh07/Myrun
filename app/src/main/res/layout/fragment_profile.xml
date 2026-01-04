@@ -38,8 +38,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="个人中心功能开发中..."
+        android:text="正在跳转到个人中心..."
         android:textSize="16sp"
-        android:textColor="@color/md_on_surface_variant" />
+        android:textColor="@color/md_on_surface_variant"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

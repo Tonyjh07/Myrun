@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myrun.util.RankingManager;
 import com.example.myrun.util.ToastUtil;
 import com.example.myrun.util.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -26,6 +27,7 @@ public class MyActivity extends AppCompatActivity {
     private TextView mTvTotalRuns;
     private TextView mTvTotalDistance;
     private TextView mTvTotalTime;
+    private MaterialCardView mMenuRunRecords;
     private MaterialCardView mMenuSettings;
     private MaterialCardView mMenuAbout;
     private MaterialCardView mMenuLogout;
@@ -34,6 +36,7 @@ public class MyActivity extends AppCompatActivity {
     private MaterialCardView mSlideMenuAbout;
     private MaterialCardView mSlideMenuLogout;
     private UserManager userManager;
+    private RankingManager rankingManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,9 @@ public class MyActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my);
         
-        // 初始化UserManager
+        // 初始化UserManager和RankingManager
         userManager = UserManager.getInstance(this);
+        rankingManager = RankingManager.getInstance(this);
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.my), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -95,9 +99,12 @@ public class MyActivity extends AppCompatActivity {
         // 主界面菜单项（通过slideMenu的第二个子视图查找）
         if (slideMenu != null && slideMenu.getChildCount() > 1) {
             View mainView = slideMenu.getChildAt(1);
-            mMenuSettings = mainView.findViewById(R.id.menu_settings);
-            mMenuAbout = mainView.findViewById(R.id.menu_about);
-            mMenuLogout = mainView.findViewById(R.id.menu_logout);
+            if (mainView != null) {
+                mMenuRunRecords = mainView.findViewById(R.id.menu_run_records);
+                mMenuSettings = mainView.findViewById(R.id.menu_settings);
+                mMenuAbout = mainView.findViewById(R.id.menu_about);
+                mMenuLogout = mainView.findViewById(R.id.menu_logout);
+            }
         }
     }
     
@@ -119,14 +126,68 @@ public class MyActivity extends AppCompatActivity {
     
     /**
      * 设置统计数据
-     * 这里使用模拟数据，实际应该从数据库或SharedPreferences中读取
+     * 从RankingManager中读取真实的统计数据
      */
     private void setupStatistics() {
-        // TODO: 从数据库或SharedPreferences中读取真实的统计数据
-        // 目前使用模拟数据
-        mTvTotalRuns.setText("0");
-        mTvTotalDistance.setText("0.0");
-        mTvTotalTime.setText("00:00");
+        if (userManager == null || rankingManager == null) {
+            return;
+        }
+        
+        String username = userManager.getCurrentUsername();
+        if (username == null || username.isEmpty()) {
+            // 未登录，显示默认值
+            if (mTvTotalRuns != null) {
+                mTvTotalRuns.setText("0");
+            }
+            if (mTvTotalDistance != null) {
+                mTvTotalDistance.setText("0.0");
+            }
+            if (mTvTotalTime != null) {
+                mTvTotalTime.setText("00:00");
+            }
+            return;
+        }
+        
+        // 获取用户的排行榜记录
+        com.example.myrun.model.RankingRecord userRecord = rankingManager.getUserRecord(username);
+        
+        if (userRecord != null) {
+            // 显示真实数据
+            if (mTvTotalRuns != null) {
+                mTvTotalRuns.setText(String.valueOf(userRecord.getTotalRuns()));
+            }
+            if (mTvTotalDistance != null) {
+                mTvTotalDistance.setText(String.format("%.1f", userRecord.getTotalDistance()));
+            }
+            if (mTvTotalTime != null) {
+                long totalTime = userRecord.getTotalTime();
+                long hours = totalTime / 3600;
+                long minutes = (totalTime % 3600) / 60;
+                if (hours > 0) {
+                    mTvTotalTime.setText(String.format("%d:%02d", hours, minutes));
+                } else {
+                    mTvTotalTime.setText(String.format("%02d", minutes));
+                }
+            }
+        } else {
+            // 没有记录，显示默认值
+            if (mTvTotalRuns != null) {
+                mTvTotalRuns.setText("0");
+            }
+            if (mTvTotalDistance != null) {
+                mTvTotalDistance.setText("0.0");
+            }
+            if (mTvTotalTime != null) {
+                mTvTotalTime.setText("00:00");
+            }
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 每次显示时刷新统计数据
+        setupStatistics();
     }
     
     /**
@@ -150,6 +211,18 @@ public class MyActivity extends AppCompatActivity {
      * 设置菜单点击事件
      */
     private void setupMenuListeners() {
+        // 查看跑步记录
+        if (mMenuRunRecords != null) {
+            mMenuRunRecords.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 跳转到跑步记录页面
+                    Intent recordsIntent = new Intent(MyActivity.this, RunRecordsActivity.class);
+                    startActivity(recordsIntent);
+                }
+            });
+        }
+        
         // 设置菜单项点击事件
         if (mMenuSettings != null) {
             mMenuSettings.setOnClickListener(new View.OnClickListener() {

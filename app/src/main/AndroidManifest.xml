@@ -30,6 +30,12 @@
             android:name=".AboutActivity"
             android:exported="false" />
         <activity
+            android:name=".MyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RunRecordsActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity

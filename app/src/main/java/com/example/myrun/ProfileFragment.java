@@ -1,5 +1,6 @@
 package com.example.myrun;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,12 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         
-        // 这里可以添加个人中心相关的逻辑
-        // 例如：显示用户信息、设置选项等
+        // 直接跳转到"我的"界面
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), MyActivity.class);
+            startActivity(intent);
+            // 延迟关闭当前Fragment的显示（虽然会立即跳转）
+        }
         
         return view;
     }

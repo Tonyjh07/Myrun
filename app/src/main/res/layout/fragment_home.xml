@@ -9,16 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@color/md_background">
 
         <!-- 跑步统计卡片 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="?attr/colorSurface">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/sport_gradient_start"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,7 +35,8 @@
                     android:gravity="center"
                     android:text="今日跑步统计"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,14 +59,16 @@
                             android:layout_height="wrap_content"
                             android:text="5.2"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                            android:textColor="?attr/colorPrimary" />
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="公里"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:textColor="@android:color/white"
+                            android:alpha="0.9" />
 
                     </LinearLayout>
 
@@ -82,14 +87,16 @@
                             android:layout_height="wrap_content"
                             android:text="28:15"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                            android:textColor="?attr/colorPrimary" />
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="分钟"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:textColor="@android:color/white"
+                            android:alpha="0.9" />
 
                     </LinearLayout>
 
@@ -108,14 +115,16 @@
                             android:layout_height="wrap_content"
                             android:text="5:26"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                            android:textColor="?attr/colorPrimary" />
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="分/公里"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:textColor="@android:color/white"
+                            android:alpha="0.9" />
 
                     </LinearLayout>
 
@@ -129,21 +138,29 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_run"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_marginBottom="16dp"
             android:text="开始跑步"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:icon="@drawable/ic_play_arrow"
+            android:backgroundTint="@color/sport_gradient_start"
+            android:textColor="@android:color/white"
             style="@style/Widget.Material3.Button"
-            app:cornerRadius="12dp"
-            app:iconPadding="8dp" />
+            app:cornerRadius="16dp"
+            app:iconPadding="12dp"
+            app:iconTint="@android:color/white"
+            android:elevation="4dp" />
 
         <!-- 最近跑步记录 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="?attr/colorSurface">
+            app:cardBackgroundColor="@android:color/white"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/md_outline_variant">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -157,7 +174,8 @@
                     android:layout_marginBottom="16dp"
                     android:text="最近跑步记录"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="@color/sport_orange_dark"
+                    android:textStyle="bold" />
 
                 <!-- 跑步记录列表 -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -173,6 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="查看全部记录"
+                    android:textColor="@color/sport_orange"
                     style="@style/Widget.Material3.Button.TextButton"
                     app:cornerRadius="8dp" />
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorSurface"
+    android:background="@color/md_background"
     tools:context=".RankingFragment">
 
     <!-- 顶部统计卡片 -->
@@ -13,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="?attr/colorPrimaryContainer">
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@color/sport_gradient_start"
+        app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +39,8 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     tools:text="8" />
 
                 <TextView
@@ -46,7 +48,8 @@
                     android:layout_height="wrap_content"
                     android:text="参与人数"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="?attr/colorOnPrimaryContainer" />
+                    android:textColor="@android:color/white"
+                    android:alpha="0.9" />
 
             </LinearLayout>
 
@@ -64,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:text="0.0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     tools:text="502.3" />
 
                 <TextView
@@ -72,7 +76,8 @@
                     android:layout_height="wrap_content"
                     android:text="总里程(km)"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="?attr/colorOnPrimaryContainer" />
+                    android:textColor="@android:color/white"
+                    android:alpha="0.9" />
 
             </LinearLayout>
 
@@ -90,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     tools:text="64" />
 
                 <TextView
@@ -98,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:text="总次数"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="?attr/colorOnPrimaryContainer" />
+                    android:textColor="@android:color/white"
+                    android:alpha="0.9" />
 
             </LinearLayout>
 
@@ -110,9 +117,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="排行榜"
+        android:text="🏆 排行榜"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:textColor="?attr/colorOnSurface"
+        android:textColor="@color/sport_orange_dark"
         android:textStyle="bold"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"

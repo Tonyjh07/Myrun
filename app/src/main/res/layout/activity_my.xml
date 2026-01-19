@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         
-        <!-- 菜单界面的布局 -->
-        <include layout="@layout/layout_menu"/>
+
         
         <!-- 主界面的布局 -->
         <LinearLayout

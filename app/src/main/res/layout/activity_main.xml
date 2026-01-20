@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/primary_light"
+                android:background="@color/sport_gradient_start"
                 app:title="跑步记录"
                 app:titleTextColor="@android:color/white"
                 app:menu="@menu/run_menu"
@@ -43,11 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/bottom_nav_background"
+            android:background="#F0F0F0"
             android:elevation="8dp"
             app:itemIconTint="@color/bottom_nav_item_selector"
         app:itemTextColor="@color/bottom_nav_item_selector"
-        app:itemBackground="@color/bottom_nav_item_background_selector"
+        app:itemBackground="@android:color/transparent"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_navigation_menu" />
 

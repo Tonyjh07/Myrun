@@ -75,18 +75,18 @@ public class StatusBarUtil {
                 return;
             }
             
-            // 设置状态栏颜色为深灰色，确保文字清晰可见
-            window.setStatusBarColor(android.graphics.Color.parseColor("#333333"));
+            // 设置状态栏颜色为浅灰色，提供更好的对比度
+            window.setStatusBarColor(android.graphics.Color.parseColor("#F5F5F5"));
             
-            // 设置导航栏颜色为深灰色
-            window.setNavigationBarColor(android.graphics.Color.parseColor("#333333"));
+            // 设置导航栏颜色为浅灰色
+            window.setNavigationBarColor(android.graphics.Color.parseColor("#F5F5F5"));
             
-            // 设置状态栏文字和图标为白色，与黑色背景形成对比
+            // 设置状态栏文字和图标为深色，与浅色背景形成对比
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 View decorView = window.getDecorView();
                 if (decorView != null) {
-                    // 清除亮色模式标志，使用深色模式（白色文字）
-                    decorView.setSystemUiVisibility(0);
+                    // 设置亮色模式标志，使用深色文字和图标
+                    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 }
             }
         } catch (Exception e) {

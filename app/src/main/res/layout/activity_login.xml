@@ -135,69 +135,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 快速操作卡片 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/colorSurface">  <!-- 修复：移除不存在的样式，直接设置属性 -->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="快速开始"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
-                            android:text="开始跑步"
-                            android:icon="@drawable/ic_run"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            app:iconGravity="textStart" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:layout_weight="1"
-                            android:text="排行榜"
-                            android:icon="@drawable/ic_ranking"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            app:iconGravity="textStart" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="个人中心"
-                            android:icon="@drawable/ic_person"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            app:iconGravity="textStart" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

@@ -74,6 +74,11 @@ public class MyActivity extends AppCompatActivity {
         
         // 设置返回键处理
         setupBackPressedHandler();
+        
+        // 添加空值检查，防止控件未找到导致的空指针异常
+        if (mTvUsername == null || mTvUserInfo == null) {
+            android.util.Log.e("MyActivity", "关键控件未找到，可能导致界面显示异常");
+        }
     }
     
     /**
@@ -88,24 +93,16 @@ public class MyActivity extends AppCompatActivity {
         mTvTotalDistance = findViewById(R.id.tv_total_distance);
         mTvTotalTime = findViewById(R.id.tv_total_time);
         
-        // 侧边栏菜单项（通过slideMenu的第一个子视图查找）
-        if (slideMenu != null && slideMenu.getChildCount() > 0) {
-            View menuView = slideMenu.getChildAt(0);
-            mSlideMenuSettings = menuView.findViewById(R.id.menu_settings);
-            mSlideMenuAbout = menuView.findViewById(R.id.menu_about);
-            mSlideMenuLogout = menuView.findViewById(R.id.menu_logout);
-        }
+        // 直接通过findViewById查找控件，避免通过子视图查找的问题
+        mMenuRunRecords = findViewById(R.id.menu_run_records);
+        mMenuSettings = findViewById(R.id.menu_settings);
+        mMenuAbout = findViewById(R.id.menu_about);
+        mMenuLogout = findViewById(R.id.menu_logout);
         
-        // 主界面菜单项（通过slideMenu的第二个子视图查找）
-        if (slideMenu != null && slideMenu.getChildCount() > 1) {
-            View mainView = slideMenu.getChildAt(1);
-            if (mainView != null) {
-                mMenuRunRecords = mainView.findViewById(R.id.menu_run_records);
-                mMenuSettings = mainView.findViewById(R.id.menu_settings);
-                mMenuAbout = mainView.findViewById(R.id.menu_about);
-                mMenuLogout = mainView.findViewById(R.id.menu_logout);
-            }
-        }
+        // 侧边栏菜单项
+        mSlideMenuSettings = findViewById(R.id.slide_menu_settings);
+        mSlideMenuAbout = findViewById(R.id.slide_menu_about);
+        mSlideMenuLogout = findViewById(R.id.slide_menu_logout);
     }
     
     /**
@@ -148,6 +145,7 @@ public class MyActivity extends AppCompatActivity {
             return;
         }
         
+        
         // 获取用户的排行榜记录
         com.example.myrun.model.RankingRecord userRecord = rankingManager.getUserRecord(username);
         
@@ -168,17 +166,6 @@ public class MyActivity extends AppCompatActivity {
                 } else {
                     mTvTotalTime.setText(String.format("%02d", minutes));
                 }
-            }
-        } else {
-            // 没有记录，显示默认值
-            if (mTvTotalRuns != null) {
-                mTvTotalRuns.setText("0");
-            }
-            if (mTvTotalDistance != null) {
-                mTvTotalDistance.setText("0.0");
-            }
-            if (mTvTotalTime != null) {
-                mTvTotalTime.setText("00:00");
             }
         }
     }

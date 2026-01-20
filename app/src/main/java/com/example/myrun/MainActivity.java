@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
                     updateToolbarTitle("排行榜");
                     return true;
                 } else if (itemId == R.id.navigation_profile) {
-                    // 直接跳转到"我的"界面
-                    Intent intent = new Intent(MainActivity.this, MyActivity.class);
-                    startActivity(intent);
+                    // 切换到个人中心Fragment
+                    switchFragment(profileFragment);
+                    updateToolbarTitle("个人中心");
                     return true;
                 }
                 return false;

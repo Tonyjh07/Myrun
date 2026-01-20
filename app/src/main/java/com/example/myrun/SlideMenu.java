@@ -84,7 +84,7 @@ public class SlideMenu extends FrameLayout {
                 //当滑动距离小于Menu宽度的一半时，平滑滑动到主页面
                 if(getScrollX()>-menuWidth/2){
                     closeMenu();
-                }else {
+                }else{
                     //当滑动距离大于Menu宽度的一半时，平滑滑动到Menu页面
                     openMenu();
                 }

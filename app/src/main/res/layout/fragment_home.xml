@@ -19,7 +19,7 @@
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="@color/primary"
+            app:cardBackgroundColor="@color/tertiary"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -144,7 +144,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:icon="@drawable/ic_play_arrow"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/tertiary"
             android:textColor="@android:color/white"
             style="@style/Widget.Material3.Button"
             app:cornerRadius="16dp"

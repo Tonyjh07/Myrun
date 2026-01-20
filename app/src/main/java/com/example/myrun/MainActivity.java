@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     case "profile":
                         if (profileFragment != null) {
                             switchFragment(profileFragment);
-                            updateToolbarTitle("个人中心");
+                            updateToolbarTitle("我的");
                             if (mBottomNavigation != null) {
                                 mBottomNavigation.setSelectedItemId(R.id.navigation_profile);
                             }
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_profile) {
                     // 切换到个人中心Fragment
                     switchFragment(profileFragment);
-                    updateToolbarTitle("个人中心");
+                    updateToolbarTitle("我的");
                     return true;
                 }
                 return false;

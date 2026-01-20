@@ -24,10 +24,7 @@ public class ProfileFragment extends Fragment {
     private TextView mTvTotalRuns;
     private TextView mTvTotalDistance;
     private TextView mTvTotalTime;
-    private TextView mSlideTvUsername;
-    private TextView mSlideTvUserInfo;
     
-    private SlideMenu slideMenu;
     private UserManager userManager;
     private RankingManager rankingManager;
 
@@ -49,14 +46,8 @@ public class ProfileFragment extends Fragment {
         // 设置统计数据
         setupStatistics();
         
-        // 设置工具栏
-        setupToolbar(view);
-        
         // 设置菜单监听器
         setupMenuListeners(view);
-        
-        // 设置侧滑菜单
-        setupSlideMenu(view);
         
         return view;
     }
@@ -69,12 +60,7 @@ public class ProfileFragment extends Fragment {
         mTvTotalDistance = view.findViewById(R.id.tv_total_distance);
         mTvTotalTime = view.findViewById(R.id.tv_total_time);
         
-        // 侧边栏视图
-        mSlideTvUsername = view.findViewById(R.id.slide_tv_username);
-        mSlideTvUserInfo = view.findViewById(R.id.slide_tv_user_info);
-        
-        // SlideMenu
-        slideMenu = view.findViewById(R.id.slideMenu);
+
     }
     
     private void setupUserInfo() {
@@ -88,12 +74,6 @@ public class ProfileFragment extends Fragment {
             if (mTvUserInfo != null) {
                 mTvUserInfo.setText("跑步爱好者");
             }
-            if (mSlideTvUsername != null) {
-                mSlideTvUsername.setText(username);
-            }
-            if (mSlideTvUserInfo != null) {
-                mSlideTvUserInfo.setText("跑步爱好者");
-            }
         } else {
             // 用户未登录
             if (mTvUsername != null) {
@@ -101,12 +81,6 @@ public class ProfileFragment extends Fragment {
             }
             if (mTvUserInfo != null) {
                 mTvUserInfo.setText("点击登录");
-            }
-            if (mSlideTvUsername != null) {
-                mSlideTvUsername.setText("未登录");
-            }
-            if (mSlideTvUserInfo != null) {
-                mSlideTvUserInfo.setText("点击登录");
             }
         }
     }
@@ -152,18 +126,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     
-    private void setupToolbar(View view) {
-        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setNavigationOnClickListener(v -> {
-                // 打开侧滑菜单
-                if (slideMenu != null) {
-                    slideMenu.switchMenu();
-                }
-            });
-        }
-    }
-    
+
     private void setupMenuListeners(View view) {
         // 查看跑步记录
         View menuRunRecords = view.findViewById(R.id.menu_run_records);
@@ -201,43 +164,7 @@ public class ProfileFragment extends Fragment {
         }
     }
     
-    private void setupSlideMenu(View view) {
-        // 侧边栏设置
-        View slideMenuSettings = view.findViewById(R.id.slide_menu_settings);
-        if (slideMenuSettings != null) {
-            slideMenuSettings.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
-                if (slideMenu != null) {
-                    slideMenu.closeMenu();
-                }
-            });
-        }
-        
-        // 侧边栏关于
-        View slideMenuAbout = view.findViewById(R.id.slide_menu_about);
-        if (slideMenuAbout != null) {
-            slideMenuAbout.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), AboutActivity.class);
-                startActivity(intent);
-                if (slideMenu != null) {
-                    slideMenu.closeMenu();
-                }
-            });
-        }
-        
-        // 侧边栏退出登录
-        View slideMenuLogout = view.findViewById(R.id.slide_menu_logout);
-        if (slideMenuLogout != null) {
-            slideMenuLogout.setOnClickListener(v -> {
-                if (slideMenu != null) {
-                    slideMenu.closeMenu();
-                }
-                showLogoutDialog();
-            });
-        }
-    }
-    
+
     private void showLogoutDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle("退出登录")

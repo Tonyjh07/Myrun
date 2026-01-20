@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myrun.util.StatusBarUtil;
 import com.example.myrun.util.ToastUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -33,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        
+        // 设置系统状态栏让出空间
+        StatusBarUtil.setSystemStatusBar(this);
         setContentView(R.layout.activity_main);
+        
+        // 为根布局设置系统栏内边距
+        StatusBarUtil.setupViewPadding(findViewById(R.id.main_container));
         
         //找到控件
         mBtnStartRun = findViewById(R.id.btn_start_run);

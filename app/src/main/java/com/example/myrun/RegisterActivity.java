@@ -6,12 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myrun.util.StatusBarUtil;
 import com.example.myrun.util.ToastUtil;
 import com.example.myrun.util.UserManager;
 
@@ -31,8 +28,13 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        
+        // 设置系统状态栏让出空间
+        StatusBarUtil.setSystemStatusBar(this);
         setContentView(R.layout.activity_register);
+        
+        // 为根布局设置系统栏内边距
+        StatusBarUtil.setupViewPadding(findViewById(android.R.id.content));
         
         // 初始化UserManager
         userManager = UserManager.getInstance(this);

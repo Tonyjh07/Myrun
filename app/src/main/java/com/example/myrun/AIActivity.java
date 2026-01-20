@@ -2,23 +2,21 @@ package com.example.myrun;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.myrun.util.StatusBarUtil;
 
 public class AIActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        
+        // 设置系统状态栏让出空间
+        StatusBarUtil.setSystemStatusBar(this);
         setContentView(R.layout.activity_aiactivity);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.ai), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        
+        // 为根布局设置系统栏内边距
+        StatusBarUtil.setupViewPadding(findViewById(R.id.ai));
     }
 }

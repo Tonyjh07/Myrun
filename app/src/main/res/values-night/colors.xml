@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 统一的黑白灰阶配色方案 -->
-    <!-- 主色调 - 纯黑 -->
-    <color name="primary">#000000</color>
-    <color name="primary_dark">#1A1A1A</color>
-    <color name="primary_light">#333333</color>
-    <color name="on_primary">#FFFFFF</color>
+    <!-- 夜间模式配色方案 -->
+    <!-- 主色调 - 深灰 -->
+    <color name="primary">#1C1B1F</color>
+    <color name="primary_dark">#141218</color>
+    <color name="primary_light">#49454F</color>
+    <color name="on_primary">#E6E1E5</color>
     
-    <!-- 副色调 - 深灰 -->
-    <color name="secondary">#666666</color>
-    <color name="secondary_dark">#4D4D4D</color>
-    <color name="secondary_light">#808080</color>
-    <color name="on_secondary">#FFFFFF</color>
+    <!-- 副色调 - 中灰 -->
+    <color name="secondary">#938F99</color>
+    <color name="secondary_dark">#7A757F</color>
+    <color name="secondary_light">#AEA9B4</color>
+    <color name="on_secondary">#1C1B1F</color>
     
-    <!-- 第三色调 - 中灰 -->
-    <color name="tertiary">#999999</color>
-    <color name="tertiary_dark">#7A7A7A</color>
-    <color name="tertiary_light">#B3B3B3</color>
-    <color name="on_tertiary">#000000</color>
+    <!-- 第三色调 - 浅灰 -->
+    <color name="tertiary">#CAC4D0</color>
+    <color name="tertiary_dark">#B5AFC8</color>
+    <color name="tertiary_light">#E8E2EC</color>
+    <color name="on_tertiary">#1C1B1F</color>
     
     <!-- 背景色 -->
-    <color name="background">#FFFFFF</color>
-    <color name="background_variant">#F8F8F8</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F5F5F5</color>
-    <color name="on_background">#000000</color>
-    <color name="on_surface">#000000</color>
-    <color name="on_surface_variant">#666666</color>
+    <color name="background">#1C1B1F</color>
+    <color name="background_variant">#141218</color>
+    <color name="surface">#1C1B1F</color>
+    <color name="surface_variant">#49454F</color>
+    <color name="on_background">#E6E1E5</color>
+    <color name="on_surface">#E6E1E5</color>
+    <color name="on_surface_variant">#CAC4D0</color>
     
     <!-- 分割线颜色 -->
-    <color name="outline">#CCCCCC</color>
-    <color name="outline_variant">#E5E5E5</color>
+    <color name="outline">#938F99</color>
+    <color name="outline_variant">#49454F</color>
     
     <!-- 状态栏和导航栏 -->
-    <color name="status_bar">#000000</color>
-    <color name="navigation_bar">#000000</color>
+    <color name="status_bar">#141218</color>
+    <color name="navigation_bar">#141218</color>
     
     <!-- 强调色 - 用于重要按钮和选中状态 -->
-    <color name="accent">#000000</color>
-    <color name="accent_light">#333333</color>
-    <color name="on_accent">#FFFFFF</color>
+    <color name="accent">#E6E1E5</color>
+    <color name="accent_light">#CAC4D0</color>
+    <color name="on_accent">#1C1B1F</color>
     
     <!-- 选中状态颜色 -->
-    <color name="selected_background">#1A1A1A</color>
-    <color name="selected_text">#FFFFFF</color>
+    <color name="selected_background">#49454F</color>
+    <color name="selected_text">#E6E1E5</color>
     
     <!-- 未选中状态颜色 -->
-    <color name="unselected_background">#F5F5F5</color>
-    <color name="unselected_text">#666666</color>
+    <color name="unselected_background">#2B2930</color>
+    <color name="unselected_text">#CAC4D0</color>
     
     <!-- 错误色 -->
-    <color name="error">#333333</color>
-    <color name="error_container">#F5F5F5</color>
-    <color name="on_error">#FFFFFF</color>
+    <color name="error">#F2B8B5</color>
+    <color name="error_container">#8C1D18</color>
+    <color name="on_error">#601410</color>
     
     <!-- Material Design 3 兼容配色 -->
     <color name="md_primary">@color/primary</color>
@@ -80,7 +80,7 @@
     <color name="md_outline_variant">@color/outline_variant</color>
     
     <!-- 底部导航专用配色 -->
-    <color name="bottom_nav_background">#F0F0F0</color>
+    <color name="bottom_nav_background">#2B2B2B</color>
     <color name="bottom_nav_item_default">@color/unselected_text</color>
     <color name="bottom_nav_item_selected">@color/selected_text</color>
     <color name="bottom_nav_item_background">@color/selected_background</color>

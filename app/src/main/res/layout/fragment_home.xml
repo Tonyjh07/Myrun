@@ -19,7 +19,7 @@
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="6dp"
-            app:cardBackgroundColor="@color/sport_gradient_start"
+            app:cardBackgroundColor="@color/primary"
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -144,7 +144,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:icon="@drawable/ic_play_arrow"
-            android:backgroundTint="@color/sport_gradient_start"
+            android:backgroundTint="@color/primary"
             android:textColor="@android:color/white"
             style="@style/Widget.Material3.Button"
             app:cornerRadius="16dp"
@@ -174,7 +174,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="最近跑步记录"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                    android:textColor="@color/sport_orange_dark"
+                    android:textColor="@color/primary"
                     android:textStyle="bold" />
 
                 <!-- 跑步记录列表 -->
@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="查看全部记录"
-                    android:textColor="@color/sport_orange"
+                    android:textColor="@color/primary"
                     style="@style/Widget.Material3.Button.TextButton"
                     app:cornerRadius="8dp" />
 

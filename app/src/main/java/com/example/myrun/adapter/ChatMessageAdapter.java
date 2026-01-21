@@ -69,6 +69,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         
         public void bind(ChatMessage message) {
             messageText.setText(message.getContent());
+            
+            // 如果是流式消息且未完成，添加打字机效果
+            if (message.isStreaming() && !message.isComplete()) {
+                // 添加光标效果
+                String currentText = message.getContent();
+                if (!currentText.endsWith("▋")) {
+                    messageText.setText(currentText + "▋");
+                }
+            }
         }
     }
 }

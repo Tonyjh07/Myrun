@@ -8,11 +8,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +53,14 @@ public class AIActivity extends AppCompatActivity {
         
         // 为根布局设置系统栏内边距
         StatusBarUtil.setupViewPadding(findViewById(R.id.ai));
+        
+        // 初始化视图
+        recyclerViewMessages = findViewById(R.id.recycler_view_messages);
+        editTextMessage = findViewById(R.id.edit_text_message);
+        buttonSend = findViewById(R.id.button_send);
+        
+        // 设置窗口插入处理，确保输入法不会遮挡内容
+        setupWindowInsets();
         
         // 初始化AI配置管理器
         aiConfigManager = AIConfigManager.getInstance(this);
@@ -155,35 +167,7 @@ public class AIActivity extends AppCompatActivity {
             }
         });
         
-        // 监听软键盘弹出和隐藏，自动滚动到底部
-        View rootView = findViewById(android.R.id.content);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                rootView.getWindowVisibleDisplayFrame(r);
-                int screenHeight = rootView.getRootView().getHeight();
-                int keypadHeight = screenHeight - r.bottom;
-                
-                if (keypadHeight > screenHeight * 0.15) {
-                    // 软键盘弹出，调整布局并滚动到底部
-                    Log.d("AIActivity", "软键盘弹出，高度: " + keypadHeight);
-                    if (messageAdapter.getItemCount() > 0) {
-                        recyclerViewMessages.postDelayed(() -> {
-                            recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
-                        }, 100);
-                    }
-                } else {
-                    // 软键盘隐藏，也滚动到底部确保看到最新消息
-                    Log.d("AIActivity", "软键盘隐藏");
-                    if (messageAdapter.getItemCount() > 0) {
-                        recyclerViewMessages.postDelayed(() -> {
-                            recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
-                        }, 100);
-                    }
-                }
-            }
-        });
+        // 注意：软键盘处理已移至setupWindowInsets()方法，使用WindowInsets API更可靠
     }
     
     private void addWelcomeMessage() {
@@ -223,39 +207,65 @@ public class AIActivity extends AppCompatActivity {
         // 显示加载状态
         showLoadingMessage();
         
-        // 发送消息到AI
-        aiService.sendMessage(message, new AIService.AIResponseCallback() {
+        // 发送消息到AI（使用流式回复）
+        aiService.sendStreamingMessage(message, new AIService.StreamingAIResponseCallback() {
+            private ChatMessage streamingMessage;
+            private int messagePosition;
+            
             @Override
-            public void onSuccess(String response) {
-                removeLoadingMessage();
-                ChatMessage aiMessage = new ChatMessage(response, ChatMessage.MessageType.AI);
-                messageList.add(aiMessage);
-                messageAdapter.notifyItemInserted(messageList.size() - 1);
-                recyclerViewMessages.postDelayed(() -> {
-                    recyclerViewMessages.scrollToPosition(messageList.size() - 1);
-                    Log.d("AIActivity", "AI回复后滚动到底部");
-                }, 100);
+            public void onStreamChunk(String chunk) {
+                runOnUiThread(() -> {
+                    if (streamingMessage == null) {
+                        // 第一次收到数据，移除加载消息并创建流式消息
+                        removeLoadingMessage();
+                        streamingMessage = new ChatMessage(chunk, ChatMessage.MessageType.AI, true);
+                        messageList.add(streamingMessage);
+                        messagePosition = messageList.size() - 1;
+                        messageAdapter.notifyItemInserted(messagePosition);
+                        recyclerViewMessages.scrollToPosition(messagePosition);
+                    } else {
+                        // 追加内容到现有消息
+                        String currentContent = streamingMessage.getContent();
+                        streamingMessage.setContent(currentContent + chunk);
+                        messageAdapter.notifyItemChanged(messagePosition);
+                        recyclerViewMessages.scrollToPosition(messagePosition);
+                    }
+                });
             }
             
             @Override
-            public void onError(String error) {
-                removeLoadingMessage();
-                // 显示更友好的错误提示
-                String friendlyError = "抱歉，AI助手暂时无法回复。";
-                if (error.contains("网络错误")) {
-                    friendlyError = "网络连接失败，请检查网络连接。";
-                } else if (error.contains("API错误")) {
-                    friendlyError = "AI服务暂时不可用，请稍后再试。";
-                } else if (error.contains("配置")) {
-                    friendlyError = "请在设置中配置AI服务。";
-                }
-                
-                ChatMessage errorMessage = new ChatMessage(friendlyError, ChatMessage.MessageType.AI);
-                messageList.add(errorMessage);
-                messageAdapter.notifyItemInserted(messageList.size() - 1);
-                recyclerViewMessages.postDelayed(() -> {
-                    recyclerViewMessages.scrollToPosition(messageList.size() - 1);
-                }, 100);
+            public void onStreamComplete() {
+                runOnUiThread(() -> {
+                    if (streamingMessage != null) {
+                        streamingMessage.setComplete(true);
+                        streamingMessage.setStreaming(false);
+                        messageAdapter.notifyItemChanged(messagePosition);
+                        Log.d("AIActivity", "流式回复完成");
+                    }
+                });
+            }
+            
+            @Override
+            public void onStreamError(String error) {
+                runOnUiThread(() -> {
+                    removeLoadingMessage();
+                    // 显示更友好的错误提示
+                    String friendlyError = "抱歉，AI助手暂时无法回复。";
+                    if (error.contains("网络错误") || error.contains("流式连接失败")) {
+                        friendlyError = "网络连接失败，请检查网络连接。";
+                    } else if (error.contains("API错误")) {
+                        friendlyError = "AI服务暂时不可用，请稍后再试。";
+                    } else if (error.contains("配置")) {
+                        friendlyError = "请在设置中配置AI服务。";
+                    }
+                    
+                    ChatMessage errorMessage = new ChatMessage(friendlyError, ChatMessage.MessageType.AI);
+                    messageList.add(errorMessage);
+                    messageAdapter.notifyItemInserted(messageList.size() - 1);
+                    recyclerViewMessages.postDelayed(() -> {
+                        recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+                    }, 100);
+                });
             }
         });
     }
@@ -292,6 +302,35 @@ public class AIActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.ai), (v, insets) -> {
+            Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            int imeHeight = imeInsets.bottom;
+
+            // 仅调整输入框容器的padding，移除对RecyclerView的动态调整
+            View inputContainer = findViewById(R.id.input_container);
+            inputContainer.setPadding(
+                inputContainer.getPaddingLeft(),
+                inputContainer.getPaddingTop(),
+                inputContainer.getPaddingRight(),
+                Math.max(imeHeight, systemBarsInsets.bottom)
+            );
+
+            // 确保RecyclerView滚动到底部
+            if (imeHeight > 0) {
+                recyclerViewMessages.post(() -> {
+                    if (messageAdapter.getItemCount() > 0) {
+                        recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    }
+                });
+            }
+
+            return insets;
+        });
     }
     
     @Override

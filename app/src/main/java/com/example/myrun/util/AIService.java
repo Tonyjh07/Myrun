@@ -24,6 +24,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.sse.EventSource;
+import okhttp3.sse.EventSourceListener;
+import okhttp3.sse.EventSources;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -291,6 +294,185 @@ public class AIService {
     }
     
     /**
+     * 流式发送消息到AI API
+     */
+    public void sendStreamingMessage(String message, StreamingAIResponseCallback callback) {
+        Log.d(TAG, "开始流式发送消息: " + message);
+        
+        if (!configManager.isConfigComplete()) {
+            Log.e(TAG, "配置不完整");
+            mainHandler.post(() -> callback.onStreamError("请先配置API设置"));
+            return;
+        }
+        
+        Log.d(TAG, "API Endpoint: " + configManager.getApiEndpoint());
+        Log.d(TAG, "API Key: " + (configManager.getApiKey().isEmpty() ? "空" : "已设置"));
+        Log.d(TAG, "System Prompt: " + configManager.getSystemPrompt());
+        
+        executorService.execute(() -> {
+            try {
+                String apiEndpoint = configManager.getApiEndpoint();
+                String apiKey = configManager.getApiKey();
+                String systemPrompt = configManager.getSystemPrompt();
+                
+                JSONObject requestBody = new JSONObject();
+                
+                // 使用配置的模型，如果没有配置则使用默认模型
+                String model = configManager.getModel();
+                if (model == null || model.isEmpty()) {
+                    // 使用默认模型
+                    model = "gpt-3.5-turbo";
+                    Log.d(TAG, "模型为空，使用默认模型: " + model);
+                } else {
+                    Log.d(TAG, "使用配置模型: " + model);
+                }
+                requestBody.put("model", model);
+                
+                JSONArray messages = new JSONArray();
+                
+                // 添加系统提示
+                JSONObject systemMessage = new JSONObject();
+                systemMessage.put("role", "system");
+                systemMessage.put("content", systemPrompt);
+                messages.put(systemMessage);
+                
+                // 添加用户消息
+                JSONObject userMessage = new JSONObject();
+                userMessage.put("role", "user");
+                userMessage.put("content", message);
+                messages.put(userMessage);
+                
+                requestBody.put("messages", messages);
+                requestBody.put("max_tokens", 1000);
+                requestBody.put("temperature", 0.7);
+                requestBody.put("stream", true); // 启用流式响应
+                
+                RequestBody body = RequestBody.create(requestBody.toString(), JSON);
+                
+                Log.d(TAG, "流式请求体: " + requestBody.toString());
+                
+                Request request = new Request.Builder()
+                        .url(apiEndpoint)
+                        .addHeader("Authorization", "Bearer " + apiKey)
+                        .addHeader("Content-Type", "application/json")
+                        .addHeader("Accept", "text/event-stream")
+                        .post(body)
+                        .build();
+                
+                // 创建EventSource监听器
+                EventSourceListener eventSourceListener = new EventSourceListener() {
+                    private StringBuilder fullResponse = new StringBuilder();
+                    // 修改 isCompleted 为 volatile，确保线程安全
+                    private volatile boolean isCompleted = false;
+                    
+                    @Override
+                    public void onOpen(EventSource eventSource, Response response) {
+                        Log.d(TAG, "流式连接已打开");
+                        isCompleted = false;
+                    }
+                    
+                    @Override
+                    public void onEvent(EventSource eventSource, String id, String type, String data) {
+                        Log.d(TAG, "收到事件: " + data);
+                    
+                        if (data.equals("[DONE]")) {
+                            Log.d(TAG, "流式响应完成");
+                            if (!isCompleted) {
+                                isCompleted = true;
+                                mainHandler.post(() -> callback.onStreamComplete());
+                            }
+                            eventSource.cancel();
+                            return;
+                        }
+                    
+                        try {
+                            JSONObject json = new JSONObject(data);
+                            
+                            // 检查是否有错误信息
+                            if (json.has("error")) {
+                                JSONObject errorObj = json.getJSONObject("error");
+                                String errorMessage = errorObj.getString("message");
+                                if (!isCompleted) {
+                                    isCompleted = true;
+                                    mainHandler.post(() -> callback.onStreamError("API错误: " + errorMessage));
+                                }
+                                eventSource.cancel();
+                                return;
+                            }
+                    
+                            // 解析choices数组
+                            JSONArray choices = json.getJSONArray("choices");
+                            if (choices.length() > 0) {
+                                JSONObject choice = choices.getJSONObject(0);
+                                JSONObject delta = choice.getJSONObject("delta");
+                                
+                                if (delta.has("content")) {
+                                    String content = delta.getString("content");
+                                    fullResponse.append(content);
+                                    mainHandler.post(() -> callback.onStreamChunk(content));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            Log.e(TAG, "解析流式数据失败: " + e.getMessage(), e);
+                            if (!isCompleted) {
+                                isCompleted = true;
+                                mainHandler.post(() -> callback.onStreamError("解析响应失败: " + e.getMessage()));
+                            }
+                            eventSource.cancel();
+                        }
+                    }
+                    
+                    @Override
+                    public void onFailure(EventSource eventSource, Throwable t, Response response) {
+                        Log.e(TAG, "流式连接失败: " + (t != null ? t.getMessage() : "未知错误"), t);
+                        String errorMessage = "流式连接失败";
+                        if (response != null && response.body() != null) {
+                            try {
+                                String errorBody = response.body().string();
+                                Log.e(TAG, "错误响应: " + errorBody);
+                            
+                                JSONObject errorJson = new JSONObject(errorBody);
+                                if (errorJson.has("error")) {
+                                    JSONObject errorObj = errorJson.getJSONObject("error");
+                                    if (errorObj.has("message")) {
+                                        errorMessage = errorObj.getString("message");
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, "解析错误响应失败: " + e.getMessage());
+                                errorMessage = "API错误: " + (response != null ? response.code() + " " + response.message() : "未知响应");
+                            }
+                        } else if (t != null) {
+                            errorMessage = t.getMessage();
+                        }
+                        final String finalErrorMessage = errorMessage;
+                        if (!isCompleted) {
+                            isCompleted = true;
+                            mainHandler.post(() -> callback.onStreamError(finalErrorMessage));
+                        }
+                    }
+                    
+                    @Override
+                    public void onClosed(EventSource eventSource) {
+                        Log.d(TAG, "流式连接已关闭，完成状态: " + isCompleted);
+                        // 只有在非正常完成的情况下才调用错误回调
+                        if (!isCompleted && fullResponse.length() == 0) {
+                            mainHandler.post(() -> callback.onStreamError("连接意外关闭"));
+                        }
+                    }
+                };
+                
+                // 创建EventSource
+                EventSource eventSource = EventSources.createFactory(client)
+                        .newEventSource(request, eventSourceListener);
+                
+            } catch (JSONException e) {
+                mainHandler.post(() -> callback.onStreamError("构建请求失败: " + e.getMessage()));
+            }
+        });
+    }
+    
+    /**
      * 关闭服务
      */
     public void shutdown() {
@@ -303,6 +485,15 @@ public class AIService {
     public interface AIResponseCallback {
         void onSuccess(String response);
         void onError(String error);
+    }
+    
+    /**
+     * 流式AI响应回调接口
+     */
+    public interface StreamingAIResponseCallback {
+        void onStreamChunk(String chunk);
+        void onStreamComplete();
+        void onStreamError(String error);
     }
     
     /**

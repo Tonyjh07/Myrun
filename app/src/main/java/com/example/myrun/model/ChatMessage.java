@@ -13,11 +13,23 @@ public class ChatMessage {
     private String content;
     private MessageType type;
     private long timestamp;
+    private boolean isStreaming; // 是否为流式消息
+    private boolean isComplete; // 流式消息是否完成
     
     public ChatMessage(String content, MessageType type) {
         this.content = content;
         this.type = type;
         this.timestamp = System.currentTimeMillis();
+        this.isStreaming = false;
+        this.isComplete = true;
+    }
+    
+    public ChatMessage(String content, MessageType type, boolean isStreaming) {
+        this.content = content;
+        this.type = type;
+        this.timestamp = System.currentTimeMillis();
+        this.isStreaming = isStreaming;
+        this.isComplete = !isStreaming;
     }
     
     public String getContent() {
@@ -42,5 +54,21 @@ public class ChatMessage {
     
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+    
+    public boolean isStreaming() {
+        return isStreaming;
+    }
+    
+    public void setStreaming(boolean streaming) {
+        isStreaming = streaming;
+    }
+    
+    public boolean isComplete() {
+        return isComplete;
+    }
+    
+    public void setComplete(boolean complete) {
+        isComplete = complete;
     }
 }

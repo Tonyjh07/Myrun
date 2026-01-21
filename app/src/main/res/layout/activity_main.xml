@@ -60,7 +60,7 @@
             android:layout_gravity="bottom"
             android:background="#F0F0F0"
             android:elevation="8dp"
-            app:itemIconTint="@color/bottom_nav_item_selector"
+            app:itemIconTint="@color/bottom_nav_icon_selector"
             app:itemTextColor="@color/bottom_nav_item_selector"
             app:itemBackground="@android:color/transparent"
             app:labelVisibilityMode="labeled"

@@ -21,9 +21,7 @@ public class ProfileFragment extends Fragment {
     
     private TextView mTvUsername;
     private TextView mTvUserInfo;
-    private TextView mTvTotalRuns;
-    private TextView mTvTotalDistance;
-    private TextView mTvTotalTime;
+
     
     private UserManager userManager;
     private RankingManager rankingManager;
@@ -43,8 +41,7 @@ public class ProfileFragment extends Fragment {
         // 设置用户信息
         setupUserInfo();
         
-        // 设置统计数据
-        setupStatistics();
+
         
         // 设置菜单监听器
         setupMenuListeners(view);
@@ -56,9 +53,7 @@ public class ProfileFragment extends Fragment {
         // 主界面视图
         mTvUsername = view.findViewById(R.id.tv_username);
         mTvUserInfo = view.findViewById(R.id.tv_user_info);
-        mTvTotalRuns = view.findViewById(R.id.tv_total_runs);
-        mTvTotalDistance = view.findViewById(R.id.tv_total_distance);
-        mTvTotalTime = view.findViewById(R.id.tv_total_time);
+
         
 
     }
@@ -86,44 +81,7 @@ public class ProfileFragment extends Fragment {
     }
     
     private void setupStatistics() {
-        String username = userManager.getCurrentUsername();
-        
-        if (username == null || username.isEmpty()) {
-            // 用户未登录，显示默认值
-            if (mTvTotalRuns != null) {
-                mTvTotalRuns.setText("0");
-            }
-            if (mTvTotalDistance != null) {
-                mTvTotalDistance.setText("0.0");
-            }
-            if (mTvTotalTime != null) {
-                mTvTotalTime.setText("00:00");
-            }
-            return;
-        }
-        
-        // 获取用户的排行榜记录
-        RankingRecord userRecord = rankingManager.getUserRecord(username);
-        
-        if (userRecord != null) {
-            // 显示真实数据
-            if (mTvTotalRuns != null) {
-                mTvTotalRuns.setText(String.valueOf(userRecord.getTotalRuns()));
-            }
-            if (mTvTotalDistance != null) {
-                mTvTotalDistance.setText(String.format("%.1f", userRecord.getTotalDistance()));
-            }
-            if (mTvTotalTime != null) {
-                long totalTime = userRecord.getTotalTime();
-                long hours = totalTime / 3600;
-                long minutes = (totalTime % 3600) / 60;
-                if (hours > 0) {
-                    mTvTotalTime.setText(String.format("%d:%02d", hours, minutes));
-                } else {
-                    mTvTotalTime.setText(String.format("%02d", minutes));
-                }
-            }
-        }
+        // 已移除运动统计功能
     }
     
 

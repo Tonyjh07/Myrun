@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.myrun.model.ChatMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -162,8 +163,11 @@ public class AIService {
     
     /**
      * 发送消息到AI API
+     * @param message 当前用户消息
+     * @param conversationHistory 对话历史列表，可为null
+     * @param callback 回调接口
      */
-    public void sendMessage(String message, AIResponseCallback callback) {
+    public void sendMessage(String message, List<ChatMessage> conversationHistory, AIResponseCallback callback) {
         Log.d(TAG, "开始发送消息: " + message);
         
         if (!configManager.isConfigComplete()) {
@@ -203,7 +207,17 @@ public class AIService {
                 systemMessage.put("content", systemPrompt);
                 messages.put(systemMessage);
                 
-                // 添加用户消息
+                // 添加历史对话
+                if (conversationHistory != null) {
+                    for (ChatMessage historyMessage : conversationHistory) {
+                        JSONObject historyJson = new JSONObject();
+                        historyJson.put("role", historyMessage.getType() == ChatMessage.MessageType.USER ? "user" : "assistant");
+                        historyJson.put("content", historyMessage.getContent());
+                        messages.put(historyJson);
+                    }
+                }
+                
+                // 添加当前用户消息
                 JSONObject userMessage = new JSONObject();
                 userMessage.put("role", "user");
                 userMessage.put("content", message);
@@ -295,8 +309,11 @@ public class AIService {
     
     /**
      * 流式发送消息到AI API
+     * @param message 当前用户消息
+     * @param conversationHistory 对话历史列表，可为null
+     * @param callback 回调接口
      */
-    public void sendStreamingMessage(String message, StreamingAIResponseCallback callback) {
+    public void sendStreamingMessage(String message, List<ChatMessage> conversationHistory, StreamingAIResponseCallback callback) {
         Log.d(TAG, "开始流式发送消息: " + message);
         
         if (!configManager.isConfigComplete()) {
@@ -336,7 +353,17 @@ public class AIService {
                 systemMessage.put("content", systemPrompt);
                 messages.put(systemMessage);
                 
-                // 添加用户消息
+                // 添加历史对话
+                if (conversationHistory != null) {
+                    for (ChatMessage historyMessage : conversationHistory) {
+                        JSONObject historyJson = new JSONObject();
+                        historyJson.put("role", historyMessage.getType() == ChatMessage.MessageType.USER ? "user" : "assistant");
+                        historyJson.put("content", historyMessage.getContent());
+                        messages.put(historyJson);
+                    }
+                }
+                
+                // 添加当前用户消息
                 JSONObject userMessage = new JSONObject();
                 userMessage.put("role", "user");
                 userMessage.put("content", message);

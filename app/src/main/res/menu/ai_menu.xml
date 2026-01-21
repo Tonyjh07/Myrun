@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom" />
         
+    <item
+        android:id="@+id/action_clear_history"
+        android:title="清除历史"
+        android:icon="@drawable/ic_clear"
+        app:showAsAction="ifRoom" />
+        
 </menu>

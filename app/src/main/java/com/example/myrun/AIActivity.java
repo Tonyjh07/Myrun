@@ -1,5 +1,11 @@
 package com.example.myrun;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -43,6 +49,9 @@ public class AIActivity extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private AIConfigManager aiConfigManager;
 
+    private static final String KEY_CONVERSATION_HISTORY = "conversation_history";
+    private static final String KEY_CONVERSATION_TIMESTAMP = "conversation_timestamp";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,11 +105,16 @@ public class AIActivity extends AppCompatActivity {
         // 初始化聊天列表
         setupChatList();
         
+        // 恢复对话历史
+        restoreConversationHistory();
+        
         // 设置事件监听器
         setupListeners();
         
-        // 添加欢迎消息
-        addWelcomeMessage();
+        // 如果没有历史消息，添加欢迎消息
+        if (messageList.isEmpty()) {
+            addWelcomeMessage();
+        }
     }
     
     private void initViews() {
@@ -177,6 +191,70 @@ public class AIActivity extends AppCompatActivity {
         );
         messageList.add(welcomeMessage);
         messageAdapter.notifyItemInserted(messageList.size() - 1);
+        
+        // 保存对话历史
+        saveConversationHistory();
+    }
+    
+    private void saveConversationHistory() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        
+        // 将消息列表转换为JSON字符串
+        JSONArray jsonArray = new JSONArray();
+        for (ChatMessage message : messageList) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("content", message.getContent());
+                jsonObject.put("type", message.getType().name());
+                jsonObject.put("timestamp", message.getTimestamp());
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                Log.e("AIActivity", "保存消息失败: " + e.getMessage());
+            }
+        }
+        
+        editor.putString(KEY_CONVERSATION_HISTORY, jsonArray.toString());
+        editor.putLong(KEY_CONVERSATION_TIMESTAMP, System.currentTimeMillis());
+        editor.apply();
+    }
+    
+    private void restoreConversationHistory() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        String jsonString = prefs.getString(KEY_CONVERSATION_HISTORY, null);
+        long lastTimestamp = prefs.getLong(KEY_CONVERSATION_TIMESTAMP, 0);
+        
+        // 如果超过24小时，清除历史记录
+        if (System.currentTimeMillis() - lastTimestamp > 24 * 60 * 60 * 1000) {
+            prefs.edit().remove(KEY_CONVERSATION_HISTORY).remove(KEY_CONVERSATION_TIMESTAMP).apply();
+            return;
+        }
+        
+        if (jsonString != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(jsonString);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String content = jsonObject.getString("content");
+                    ChatMessage.MessageType type = ChatMessage.MessageType.valueOf(jsonObject.getString("type"));
+                    long timestamp = jsonObject.getLong("timestamp");
+                    
+                    ChatMessage message = new ChatMessage(content, type);
+                    message.setTimestamp(timestamp);
+                    messageList.add(message);
+                }
+                messageAdapter.notifyDataSetChanged();
+                
+                // 滚动到底部
+                if (messageList.size() > 0) {
+                    recyclerViewMessages.postDelayed(() -> {
+                        recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+                    }, 100);
+                }
+            } catch (JSONException e) {
+                Log.e("AIActivity", "恢复消息失败: " + e.getMessage());
+            }
+        }
     }
     
     private void sendMessage() {
@@ -195,6 +273,9 @@ public class AIActivity extends AppCompatActivity {
         messageList.add(userMessage);
         messageAdapter.notifyItemInserted(messageList.size() - 1);
         
+        // 保存对话历史
+        saveConversationHistory();
+        
         // 清空输入框
         editTextMessage.setText("");
         
@@ -208,7 +289,7 @@ public class AIActivity extends AppCompatActivity {
         showLoadingMessage();
         
         // 发送消息到AI（使用流式回复）
-        aiService.sendStreamingMessage(message, new AIService.StreamingAIResponseCallback() {
+        aiService.sendStreamingMessage(message, messageList, new AIService.StreamingAIResponseCallback() {
             private ChatMessage streamingMessage;
             private int messagePosition;
             
@@ -287,6 +368,25 @@ public class AIActivity extends AppCompatActivity {
         }
     }
     
+    private void clearConversationHistory() {
+        // 清除内存中的消息列表
+        messageList.clear();
+        messageAdapter.notifyDataSetChanged();
+        
+        // 清除SharedPreferences中的历史记录
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        prefs.edit()
+            .remove(KEY_CONVERSATION_HISTORY)
+            .remove(KEY_CONVERSATION_TIMESTAMP)
+            .apply();
+        
+        // 添加欢迎消息
+        addWelcomeMessage();
+        
+        // 显示提示
+        Toast.makeText(this, "已清除对话历史", Toast.LENGTH_SHORT).show();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.ai_menu, menu);
@@ -299,6 +399,10 @@ public class AIActivity extends AppCompatActivity {
             // 跳转到设置页面
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+            return true;
+        } else if (item.getItemId() == R.id.action_clear_history) {
+            // 清除历史记录
+            clearConversationHistory();
             return true;
         }
         return super.onOptionsItemSelected(item);

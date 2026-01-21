@@ -11,7 +11,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/md_background">
+        android:background="@color/keep_background">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/sport_gradient_start"
+                android:background="@color/keep_green"
                 app:title="跑步记录"
                 app:titleTextColor="@android:color/white"
                 app:menu="@menu/run_menu"
@@ -46,7 +46,7 @@
                 android:layout_marginBottom="108dp"
                 android:contentDescription="AI功能"
                 android:src="@drawable/ic_info"
-                app:backgroundTint="@color/sport_gradient_start"
+                app:backgroundTint="@color/keep_green"
                 app:elevation="8dp"
                 app:rippleColor="@android:color/white"
                 app:tint="@android:color/white" />
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#F0F0F0"
+            android:background="@android:color/white"
             android:elevation="8dp"
             app:itemIconTint="@color/bottom_nav_icon_selector"
             app:itemTextColor="@color/bottom_nav_item_selector"

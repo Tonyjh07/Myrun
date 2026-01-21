@@ -5,60 +5,248 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/keep_background"
     tools:context=".ProfileFragment">
 
-    <!-- 主界面的布局 -->
-        <LinearLayout
-            android:id="@+id/my"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/md_background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-            <ScrollView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Keep风格用户信息卡片 -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/keep_green"
+                android:background="@drawable/keep_gradient_bg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="28dp"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_marginEnd="24dp"
+                        app:cardCornerRadius="48dp"
+                        app:cardElevation="8dp"
+                        app:cardBackgroundColor="@android:color/white">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_person"
+                            android:padding="24dp"
+                            android:tint="@color/keep_green" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="用户名"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tv_user_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="跑步爱好者"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                            android:textColor="@android:color/white"
+                            android:alpha="0.9" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 跑步统计卡片 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
-                    <!-- 用户信息卡片 -->
-                    <com.google.android.material.card.MaterialCardView
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:text="跑步统计"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                        android:textColor="@color/keep_green_dark"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <!-- 总次数 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_total_runs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                                android:textColor="@color/keep_green"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="总次数"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                        <!-- 总里程 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_total_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.0"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                                android:textColor="@color/keep_blue"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="总里程(km)"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                        <!-- 总时长 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_total_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00:00"
+                                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                                android:textColor="@color/keep_orange"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="总时长"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 功能菜单 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                    <!-- 基础信息 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/menu_basic_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp"
-                        android:background="@color/sport_gradient_start">
+                        app:cardElevation="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:padding="24dp"
+                            android:padding="20dp"
                             android:gravity="center_vertical">
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_marginEnd="20dp"
-                                app:cardCornerRadius="40dp"
-                                app:cardElevation="4dp"
-                                app:cardBackgroundColor="@android:color/white">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:src="@drawable/ic_person"
-                                    android:padding="20dp"
-                                    android:tint="@color/sport_orange" />
-
-                            </com.google.android.material.card.MaterialCardView>
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_person"
+                                android:tint="@color/keep_green"
+                                android:layout_marginEnd="20dp" />
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -67,307 +255,238 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/tv_username"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="用户名"
-                                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold"
-                                    android:layout_marginBottom="4dp" />
+                                    android:text="基础信息"
+                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textStyle="bold" />
 
-                                <TextView
-                                    android:id="@+id/tv_user_info"
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="跑步爱好者"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                                    android:textColor="@android:color/white"
-                                    android:alpha="0.9" />
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="6dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="身高："
+                                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                    <TextView
+                                        android:id="@+id/tv_height"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="--"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                        android:textColor="@color/keep_green"
+                                        android:layout_marginEnd="16dp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="体重："
+                                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                    <TextView
+                                        android:id="@+id/tv_weight"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="--"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                        android:textColor="@color/keep_green" />
+
+                                </LinearLayout>
 
                             </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chevron_right"
+                                android:tint="?attr/colorOnSurfaceVariant" />
 
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- 功能菜单 -->
+                    <!-- 查看跑步记录 -->
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/menu_run_records"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
+                        app:cardElevation="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="8dp">
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
 
-                            <!-- 基础信息菜单项 -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/menu_basic_info"
-                                android:layout_width="match_parent"
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_run"
+                                android:tint="@color/keep_green"
+                                android:layout_marginEnd="20dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="0dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?attr/selectableItemBackground">
+                                android:layout_weight="1"
+                                android:text="查看跑步记录"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textStyle="bold" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chevron_right"
+                                android:tint="?attr/colorOnSurfaceVariant" />
 
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_person"
-                                        android:tint="@color/sport_orange"
-                                        android:layout_marginEnd="16dp" />
+                        </LinearLayout>
 
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical">
+                    </com.google.android.material.card.MaterialCardView>
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="基础信息"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                                            android:textColor="?attr/colorOnSurface" />
+                    <!-- 设置 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/menu_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
-                                        <LinearLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:layout_marginTop="4dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
 
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="身高："
-                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                                android:textColor="?attr/colorOnSurfaceVariant" />
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_settings"
+                                android:tint="@color/keep_green"
+                                android:layout_marginEnd="20dp" />
 
-                                            <TextView
-                                                android:id="@+id/tv_height"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="--"
-                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                                android:textColor="@color/sport_orange"
-                                                android:layout_marginEnd="16dp" />
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="体重："
-                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                                android:textColor="?attr/colorOnSurfaceVariant" />
-
-                                            <TextView
-                                                android:id="@+id/tv_weight"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="--"
-                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                                                android:textColor="@color/sport_orange" />
-
-                                        </LinearLayout>
-
-                                    </LinearLayout>
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_chevron_right"
-                                        android:tint="?attr/colorOnSurfaceVariant" />
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                            <!-- 查看跑步记录 -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/menu_run_records"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="0dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?attr/selectableItemBackground">
+                                android:layout_weight="1"
+                                android:text="设置"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textStyle="bold" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chevron_right"
+                                android:tint="?attr/colorOnSurfaceVariant" />
 
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_run"
-                                        android:tint="@color/sport_orange"
-                                        android:layout_marginEnd="16dp" />
+                        </LinearLayout>
 
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="查看跑步记录"
-                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                                        android:textColor="?attr/colorOnSurface" />
+                    </com.google.android.material.card.MaterialCardView>
 
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_chevron_right"
-                                        android:tint="?attr/colorOnSurfaceVariant" />
+                    <!-- 关于 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/menu_about"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
-                                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
 
-                            </com.google.android.material.card.MaterialCardView>
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_info"
+                                android:tint="@color/keep_green"
+                                android:layout_marginEnd="20dp" />
 
-                            <!-- 设置 -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/menu_settings"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="0dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?attr/selectableItemBackground">
+                                android:layout_weight="1"
+                                android:text="关于"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textStyle="bold" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:gravity="center_vertical">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chevron_right"
+                                android:tint="?attr/colorOnSurfaceVariant" />
 
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_settings"
-                                        android:tint="@color/sport_orange"
-                                        android:layout_marginEnd="16dp" />
+                        </LinearLayout>
 
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="设置"
-                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                                        android:textColor="?attr/colorOnSurface" />
+                    </com.google.android.material.card.MaterialCardView>
 
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_chevron_right"
-                                        android:tint="?attr/colorOnSurfaceVariant" />
+                    <!-- 退出登录 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/menu_logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
-                                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
 
-                            </com.google.android.material.card.MaterialCardView>
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_person"
+                                android:tint="@color/keep_red"
+                                android:layout_marginEnd="20dp" />
 
-                            <!-- 关于 -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/menu_about"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="0dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?attr/selectableItemBackground">
+                                android:layout_weight="1"
+                                android:text="退出登录"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                android:textColor="@color/keep_red"
+                                android:textStyle="bold" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:gravity="center_vertical">
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_info"
-                                        android:tint="@color/sport_orange"
-                                        android:layout_marginEnd="16dp" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="关于"
-                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                                        android:textColor="?attr/colorOnSurface" />
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_chevron_right"
-                                        android:tint="?attr/colorOnSurfaceVariant" />
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                            <!-- 退出登录 -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/menu_logout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:cardCornerRadius="12dp"
-                                app:cardElevation="0dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="?attr/selectableItemBackground">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:gravity="center_vertical">
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_person"
-                                        android:tint="?attr/colorError"
-                                        android:layout_marginEnd="16dp" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="退出登录"
-                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                                        android:textColor="?attr/colorError" />
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:src="@drawable/ic_chevron_right"
-                                        android:tint="?attr/colorOnSurfaceVariant" />
-
-                                </LinearLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_chevron_right"
+                                android:tint="@color/keep_red" />
 
                         </LinearLayout>
 
@@ -375,8 +494,10 @@
 
                 </LinearLayout>
 
-            </ScrollView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

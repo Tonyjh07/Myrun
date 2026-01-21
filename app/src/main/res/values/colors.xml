@@ -79,23 +79,48 @@
     <color name="md_outline">@color/outline</color>
     <color name="md_outline_variant">@color/outline_variant</color>
     
-    <!-- 底部导航专用配色 -->
-    <color name="bottom_nav_background">#F0F0F0</color>
-    <color name="bottom_nav_item_default">@color/unselected_text</color>
-    <color name="bottom_nav_item_selected">@color/selected_text</color>
+    <!-- 底部导航专用配色 - Keep风格 -->
+    <color name="bottom_nav_background">#FFFFFF</color>
+    <color name="bottom_nav_item_default">#999999</color>
+    <color name="bottom_nav_item_selected">@color/keep_green</color>
     <color name="bottom_nav_item_background">@color/selected_background</color>
     
-    <!-- 运动主题兼容配色（转换为灰阶） -->
-    <color name="sport_orange">@color/tertiary</color>
-    <color name="sport_orange_light">@color/tertiary_light</color>
-    <color name="sport_orange_dark">@color/tertiary_dark</color>
-    <color name="sport_blue">@color/secondary</color>
-    <color name="sport_blue_light">@color/secondary_light</color>
-    <color name="sport_blue_dark">@color/secondary_dark</color>
-    <color name="sport_red">@color/tertiary</color>
-    <color name="sport_green">@color/secondary</color>
-    <color name="sport_gradient_start">@color/secondary</color>
-    <color name="sport_gradient_end">@color/tertiary</color>
+    <!-- Keep风格运动主题配色 - 经典绿色系 -->
+    <color name="keep_green">#00C853</color>
+    <color name="keep_green_light">#5EFC82</color>
+    <color name="keep_green_dark">#009624</color>
+    <color name="keep_green_accent">#00E676</color>
+    <color name="keep_orange">#FF6B35</color>
+    <color name="keep_orange_light">#FF8A65</color>
+    <color name="keep_orange_dark">#E64A19</color>
+    <color name="keep_blue">#2196F3</color>
+    <color name="keep_blue_light">#64B5F6</color>
+    <color name="keep_blue_dark">#1976D2</color>
+    <color name="keep_red">#F44336</color>
+    <color name="keep_purple">#9C27B0</color>
+    <color name="keep_yellow">#FFC107</color>
+    
+    <!-- 运动主题兼容配色 -->
+    <color name="sport_orange">#FF9800</color>
+    <color name="sport_orange_light">#FFB74D</color>
+    <color name="sport_orange_dark">#F57C00</color>
+    <color name="sport_blue">#2196F3</color>
+    <color name="sport_blue_light">#64B5F6</color>
+    <color name="sport_blue_dark">#1976D2</color>
+    <color name="sport_red">#F44336</color>
+    <color name="sport_green">#4CAF50</color>
+    <color name="sport_gradient_start">#4CAF50</color>
+    <color name="sport_gradient_end">#81C784</color>
+    
+    <!-- Keep风格渐变背景 -->
+    <color name="keep_gradient_start">#00C853</color>
+    <color name="keep_gradient_end">#5EFC82</color>
+    <color name="keep_gradient_orange_start">#FF6B35</color>
+    <color name="keep_gradient_orange_end">#FF8A65</color>
+    <color name="keep_card_bg">#FFFFFF</color>
+    <color name="keep_background">#F5F5F5</color>
+    <color name="keep_surface">#FFFFFF</color>
+    <color name="keep_divider">#E0E0E0</color>
     
     <!-- 保留原有颜色用于兼容性 -->
     <color name="colorBlack">@color/primary</color>

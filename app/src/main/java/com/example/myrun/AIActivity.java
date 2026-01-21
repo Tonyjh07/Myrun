@@ -58,6 +58,12 @@ public class AIActivity extends AppCompatActivity {
         
         // 设置沉浸式状态栏
         StatusBarUtil.setImmersiveStatusBar(this);
+        getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
         setContentView(R.layout.activity_aiactivity);
         
         // 为根布局设置系统栏内边距

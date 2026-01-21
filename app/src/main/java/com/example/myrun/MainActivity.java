@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     //声明控件
-    private MaterialButton mBtnStartRun;
     private MaterialButton mBtnViewRecords;
     private BottomNavigationView mBottomNavigation;
     private MaterialToolbar mToolbar;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     // Fragment相关
     private FragmentManager fragmentManager;
     private HomeFragment homeFragment;
-    private RunFragment runFragment;
+    protected RunFragment runFragment;
     private RankingFragment rankingFragment;
     private ProfileFragment profileFragment;
 
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         StatusBarUtil.setupViewPadding(findViewById(R.id.main_container));
 
         //找到控件
-        mBtnStartRun = findViewById(R.id.btn_start_run);
         mBtnViewRecords = findViewById(R.id.btn_view_records);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mToolbar = findViewById(R.id.toolbar);
@@ -64,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // 初始化Fragment
         initFragments();
 
-        //设置点击监听器
-        setListeners();
+
 
         //设置AI FAB点击监听器
         setupAIFABListener();
@@ -135,19 +132,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setListeners() {
-        //开始跑步按钮点击事件
-        if (mBtnStartRun != null) {
-            mBtnStartRun.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 开始跑步功能
-                    ToastUtil.showMsg(MainActivity.this, "开始跑步功能");
-                }
-            });
-        }
-
-        //查看全部记录按钮点击事件
+    //查看全部记录按钮点击事件
+    private void setListeners(){
         if (mBtnViewRecords != null) {
             mBtnViewRecords.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -214,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 初始化Fragment
      */
-    private void initFragments() {
+    protected void initFragments() {
         fragmentManager = getSupportFragmentManager();
 
         // 创建Fragment实例
@@ -236,9 +222,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragment == null || fragmentManager == null) {
             return;
         }
-
+        
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
+        
         // 隐藏所有Fragment
         if (homeFragment != null && homeFragment.isAdded()) {
             transaction.hide(homeFragment);
@@ -252,15 +238,21 @@ public class MainActivity extends AppCompatActivity {
         if (profileFragment != null && profileFragment.isAdded()) {
             transaction.hide(profileFragment);
         }
-
+        
         // 显示目标Fragment
-        if (!fragment.isAdded()) {
-            transaction.add(R.id.fragment_container, fragment);
-        } else {
+        if (fragment.isAdded()) {
             transaction.show(fragment);
+        } else {
+            // 先移除已存在的相同类型Fragment
+            String tag = fragment.getClass().getSimpleName();
+            Fragment existingFragment = fragmentManager.findFragmentByTag(tag);
+            if (existingFragment != null) {
+                transaction.remove(existingFragment);
+            }
+            transaction.add(R.id.fragment_container, fragment, tag);
         }
-
-        transaction.commit();
+        
+        transaction.commitNowAllowingStateLoss();
     }
 
     /**

@@ -46,6 +46,9 @@ public class HomeFragment extends Fragment {
                     // 切换到跑步界面
                     if (getActivity() instanceof MainActivity) {
                         MainActivity mainActivity = (MainActivity) getActivity();
+                        if (mainActivity.runFragment == null) {
+                            mainActivity.initFragments();
+                        }
                         mainActivity.switchToRunFragment();
                     }
                 }

@@ -15,6 +15,7 @@ import com.example.myrun.util.ToastUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     //声明控件
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton mBtnViewRecords;
     private BottomNavigationView mBottomNavigation;
     private MaterialToolbar mToolbar;
-    
+    private FloatingActionButton mFabAI;
+
     // Fragment相关
     private FragmentManager fragmentManager;
     private HomeFragment homeFragment;
@@ -33,44 +35,48 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // 设置系统状态栏让出空间
         StatusBarUtil.setSystemStatusBar(this);
         setContentView(R.layout.activity_main);
-        
+
         // 为根布局设置系统栏内边距
         StatusBarUtil.setupViewPadding(findViewById(R.id.main_container));
-        
+
         //找到控件
         mBtnStartRun = findViewById(R.id.btn_start_run);
         mBtnViewRecords = findViewById(R.id.btn_view_records);
         mBottomNavigation = findViewById(R.id.bottom_navigation);
         mToolbar = findViewById(R.id.toolbar);
+        mFabAI = findViewById(R.id.fab_ai);
 
         // 初始化Fragment
         initFragments();
-        
+
         //设置点击监听器
         setListeners();
-        
+
+        //设置AI FAB点击监听器
+        setupAIFABListener();
+
         //设置底部导航监听器
         setupBottomNavigation();
-        
+
         //设置工具栏
         setupToolbar();
-        
+
         // 设置返回键处理
         setupBackPressedHandler();
-        
+
         // 检查是否有从SlideActivity传递过来的Fragment切换参数
         handleIntentFragment();
-        
+
         // 如果没有指定Fragment，默认设置导航栏选中状态为首页
         if (mBottomNavigation != null && mBottomNavigation.getSelectedItemId() == 0) {
             mBottomNavigation.setSelectedItemId(R.id.navigation_home);
         }
     }
-    
+
     private void handleIntentFragment() {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("fragment")) {
@@ -117,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    
-    private void setListeners(){
+
+    private void setListeners() {
         //开始跑步按钮点击事件
         if (mBtnStartRun != null) {
             mBtnStartRun.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        
+
         //查看全部记录按钮点击事件
         if (mBtnViewRecords != null) {
             mBtnViewRecords.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
-    
+
     private void setupBottomNavigation() {
         if (mBottomNavigation != null) {
             mBottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -171,9 +177,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
-    
+
     // setupSlideMenu()方法已删除，因为相关控件已不存在
-    
+
     /**
      * 设置返回键处理
      */
@@ -186,32 +192,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     private void setupToolbar() {
         // 工具栏设置（如果需要可以添加其他功能）
         if (mToolbar != null) {
             // 可以在这里添加工具栏的其他功能
         }
     }
-    
+
     /**
      * 初始化Fragment
      */
     private void initFragments() {
         fragmentManager = getSupportFragmentManager();
-        
+
         // 创建Fragment实例
         homeFragment = new HomeFragment();
         runFragment = new RunFragment();
         rankingFragment = new RankingFragment();
         profileFragment = new ProfileFragment();
-        
+
         // 默认显示首页
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fragment_container, homeFragment);
         transaction.commit();
     }
-    
+
     /**
      * 切换Fragment
      */
@@ -219,9 +225,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragment == null || fragmentManager == null) {
             return;
         }
-        
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        
+
         // 隐藏所有Fragment
         if (homeFragment != null && homeFragment.isAdded()) {
             transaction.hide(homeFragment);
@@ -235,17 +241,17 @@ public class MainActivity extends AppCompatActivity {
         if (profileFragment != null && profileFragment.isAdded()) {
             transaction.hide(profileFragment);
         }
-        
+
         // 显示目标Fragment
         if (!fragment.isAdded()) {
             transaction.add(R.id.fragment_container, fragment);
         } else {
             transaction.show(fragment);
         }
-        
+
         transaction.commit();
     }
-    
+
     /**
      * 更新工具栏标题
      */
@@ -254,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             mToolbar.setTitle(title);
         }
     }
-    
+
     // 提供给HomeFragment调用的方法，切换到跑步界面
     public void switchToRunFragment() {
         if (runFragment != null) {
@@ -263,6 +269,22 @@ public class MainActivity extends AppCompatActivity {
             if (mBottomNavigation != null) {
                 mBottomNavigation.setSelectedItemId(R.id.navigation_run);
             }
+        }
+    }
+
+    /**
+     * 设置AI FAB点击监听器
+     */
+    private void setupAIFABListener() {
+        if (mFabAI != null) {
+            mFabAI.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 跳转到AIActivity
+                    Intent intent = new Intent(MainActivity.this, AIActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

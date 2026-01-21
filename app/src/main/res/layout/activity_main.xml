@@ -35,7 +35,22 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_ai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="108dp"
+                android:contentDescription="AI功能"
+                android:src="@drawable/ic_info"
+                app:backgroundTint="@color/sport_gradient_start"
+                app:elevation="8dp"
+                app:rippleColor="@android:color/white"
+                app:tint="@android:color/white" />
+        </FrameLayout>
 
         <!-- 底部导航 -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -50,6 +65,8 @@
         app:itemBackground="@android:color/transparent"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_navigation_menu" />
+
+        <!-- AI功能FAB -->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

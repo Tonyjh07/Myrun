@@ -1,12 +1,43 @@
 package com.example.myrun;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myrun.adapter.ChatMessageAdapter;
+import com.example.myrun.model.ChatMessage;
+import com.example.myrun.util.AIConfigManager;
+import com.example.myrun.util.AIService;
 import com.example.myrun.util.StatusBarUtil;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AIActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerViewMessages;
+    private TextInputEditText editTextMessage;
+    private MaterialButton buttonSend;
+    private ChatMessageAdapter messageAdapter;
+    private List<ChatMessage> messageList;
+    private AIService aiService;
+    private MaterialToolbar toolbar;
+    private AIConfigManager aiConfigManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +49,256 @@ public class AIActivity extends AppCompatActivity {
         
         // 为根布局设置系统栏内边距
         StatusBarUtil.setupViewPadding(findViewById(R.id.ai));
+        
+        // 初始化AI配置管理器
+        aiConfigManager = AIConfigManager.getInstance(this);
+        
+        // 调试：显示当前配置状态
+        Log.d("AIActivity", "=== AI配置状态 ===");
+        Log.d("AIActivity", "API Key: " + (aiConfigManager.getApiKey().isEmpty() ? "空" : "已设置"));
+        Log.d("AIActivity", "Endpoint: " + aiConfigManager.getApiEndpoint());
+        Log.d("AIActivity", "Model: " + aiConfigManager.getModel());
+        Log.d("AIActivity", "System Prompt: " + aiConfigManager.getSystemPrompt());
+        
+        // 检查AI配置是否完整
+        if (!aiConfigManager.isConfigComplete()) {
+            Log.d("AIActivity", "配置不完整，跳转到设置页面");
+            Toast.makeText(this, "请先配置AI服务", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        
+        Log.d("AIActivity", "配置完整，继续初始化");
+        
+        // 初始化AI服务
+        aiService = new AIService(this);
+        
+        // 初始化视图
+        initViews();
+        
+        // 设置工具栏
+        setupToolbar();
+        
+        // 初始化聊天列表
+        setupChatList();
+        
+        // 设置事件监听器
+        setupListeners();
+        
+        // 添加欢迎消息
+        addWelcomeMessage();
+    }
+    
+    private void initViews() {
+        recyclerViewMessages = findViewById(R.id.recycler_view_messages);
+        editTextMessage = findViewById(R.id.edit_text_message);
+        buttonSend = findViewById(R.id.button_send);
+        toolbar = findViewById(R.id.toolbar);
+    }
+    
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
+    }
+    
+    private void setupChatList() {
+        messageList = new ArrayList<>();
+        messageAdapter = new ChatMessageAdapter(messageList);
+        
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        
+        recyclerViewMessages.setLayoutManager(layoutManager);
+        recyclerViewMessages.setAdapter(messageAdapter);
+    }
+    
+    private void setupListeners() {
+        buttonSend.setOnClickListener(v -> sendMessage());
+        
+        // 设置回车键发送消息
+        editTextMessage.setOnEditorActionListener((v, actionId, event) -> {
+            sendMessage();
+            return true;
+        });
+        
+        // 监听输入框焦点变化，获得焦点时滚动到底部
+        editTextMessage.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && messageAdapter.getItemCount() > 0) {
+                Log.d("AIActivity", "输入框获得焦点，滚动到底部");
+                recyclerViewMessages.postDelayed(() -> {
+                    recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+                }, 300);
+            }
+        });
+        
+        // 监听输入框文本变化，自动滚动到底部
+        editTextMessage.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                // 当输入框内容变化时，确保能看到最新消息
+                if (messageAdapter.getItemCount() > 0) {
+                    recyclerViewMessages.postDelayed(() -> {
+                        recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+                    }, 100);
+                }
+            }
+        });
+        
+        // 监听软键盘弹出和隐藏，自动滚动到底部
+        View rootView = findViewById(android.R.id.content);
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootView.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootView.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+                
+                if (keypadHeight > screenHeight * 0.15) {
+                    // 软键盘弹出，调整布局并滚动到底部
+                    Log.d("AIActivity", "软键盘弹出，高度: " + keypadHeight);
+                    if (messageAdapter.getItemCount() > 0) {
+                        recyclerViewMessages.postDelayed(() -> {
+                            recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+                        }, 100);
+                    }
+                } else {
+                    // 软键盘隐藏，也滚动到底部确保看到最新消息
+                    Log.d("AIActivity", "软键盘隐藏");
+                    if (messageAdapter.getItemCount() > 0) {
+                        recyclerViewMessages.postDelayed(() -> {
+                            recyclerViewMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+                        }, 100);
+                    }
+                }
+            }
+        });
+    }
+    
+    private void addWelcomeMessage() {
+        ChatMessage welcomeMessage = new ChatMessage(
+            "你好！我是你的AI跑步助手，可以帮你解答关于跑步、健身和健康的问题。有什么可以帮助你的吗？",
+            ChatMessage.MessageType.AI
+        );
+        messageList.add(welcomeMessage);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+    }
+    
+    private void sendMessage() {
+        String message = editTextMessage.getText().toString().trim();
+        
+        if (message.isEmpty()) {
+            return;
+        }
+        
+        // 隐藏软键盘
+        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editTextMessage.getWindowToken(), 0);
+        
+        // 添加用户消息到列表
+        ChatMessage userMessage = new ChatMessage(message, ChatMessage.MessageType.USER);
+        messageList.add(userMessage);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+        
+        // 清空输入框
+        editTextMessage.setText("");
+        
+        // 滚动到底部，延迟稍长确保键盘收起后再滚动
+        recyclerViewMessages.postDelayed(() -> {
+            recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+            Log.d("AIActivity", "发送消息后滚动到底部");
+        }, 200);
+        
+        // 显示加载状态
+        showLoadingMessage();
+        
+        // 发送消息到AI
+        aiService.sendMessage(message, new AIService.AIResponseCallback() {
+            @Override
+            public void onSuccess(String response) {
+                removeLoadingMessage();
+                ChatMessage aiMessage = new ChatMessage(response, ChatMessage.MessageType.AI);
+                messageList.add(aiMessage);
+                messageAdapter.notifyItemInserted(messageList.size() - 1);
+                recyclerViewMessages.postDelayed(() -> {
+                    recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+                    Log.d("AIActivity", "AI回复后滚动到底部");
+                }, 100);
+            }
+            
+            @Override
+            public void onError(String error) {
+                removeLoadingMessage();
+                // 显示更友好的错误提示
+                String friendlyError = "抱歉，AI助手暂时无法回复。";
+                if (error.contains("网络错误")) {
+                    friendlyError = "网络连接失败，请检查网络连接。";
+                } else if (error.contains("API错误")) {
+                    friendlyError = "AI服务暂时不可用，请稍后再试。";
+                } else if (error.contains("配置")) {
+                    friendlyError = "请在设置中配置AI服务。";
+                }
+                
+                ChatMessage errorMessage = new ChatMessage(friendlyError, ChatMessage.MessageType.AI);
+                messageList.add(errorMessage);
+                messageAdapter.notifyItemInserted(messageList.size() - 1);
+                recyclerViewMessages.postDelayed(() -> {
+                    recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+                }, 100);
+            }
+        });
+    }
+    
+    private void showLoadingMessage() {
+        ChatMessage loadingMessage = new ChatMessage("正在思考...", ChatMessage.MessageType.AI);
+        messageList.add(loadingMessage);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+        recyclerViewMessages.postDelayed(() -> {
+            recyclerViewMessages.scrollToPosition(messageList.size() - 1);
+        }, 100);
+    }
+    
+    private void removeLoadingMessage() {
+        if (!messageList.isEmpty() && 
+            messageList.get(messageList.size() - 1).getContent().equals("正在思考...")) {
+            messageList.remove(messageList.size() - 1);
+            messageAdapter.notifyItemRemoved(messageList.size());
+        }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ai_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            // 跳转到设置页面
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (aiService != null) {
+            aiService.shutdown();
+        }
     }
 }

@@ -144,6 +144,12 @@ public class ProfileFragment extends Fragment {
         // 刷新界面
         setupUserInfo();
         setupStatistics();
+        
+        // 重定向到LoginActivity
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
     }
     
     @Override

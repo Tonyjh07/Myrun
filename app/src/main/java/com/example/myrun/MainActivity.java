@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myrun.util.StatusBarUtil;
 import com.example.myrun.util.ToastUtil;
+import com.example.myrun.util.UserManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // 检查登录状态
+        UserManager userManager = UserManager.getInstance(this);
+        if (userManager.getCurrentUsername() == null || userManager.getCurrentUsername().isEmpty()) {
+            // 未登录，跳转到登录页面
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         // 设置系统状态栏让出空间
         StatusBarUtil.setSystemStatusBar(this);

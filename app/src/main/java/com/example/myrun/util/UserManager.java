@@ -16,6 +16,8 @@ public class UserManager {
     private static final String KEY_USERS = "users"; // 存储所有用户名
     private static final String KEY_CURRENT_USER = "current_user"; // 当前登录用户
     private static final String PASSWORD_PREFIX = "password_"; // 密码前缀
+    private static final String HEIGHT_PREFIX = "height_"; // 身高前缀
+    private static final String WEIGHT_PREFIX = "weight_"; // 体重前缀
     
     private SharedPreferences sharedPreferences;
     private static UserManager instance;
@@ -152,5 +154,93 @@ public class UserManager {
         editor.apply();
         
         return true;
+    }
+    
+    /**
+     * 保存用户身高
+     * @param username 用户名
+     * @param height 身高（厘米）
+     */
+    public void saveHeight(String username, float height) {
+        if (TextUtils.isEmpty(username)) {
+            return;
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(HEIGHT_PREFIX + username, height);
+        editor.apply();
+    }
+    
+    /**
+     * 获取用户身高
+     * @param username 用户名
+     * @return 身高（厘米），如果未设置则返回0
+     */
+    public float getHeight(String username) {
+        if (TextUtils.isEmpty(username)) {
+            return 0f;
+        }
+        return sharedPreferences.getFloat(HEIGHT_PREFIX + username, 0f);
+    }
+    
+    /**
+     * 保存用户体重
+     * @param username 用户名
+     * @param weight 体重（公斤）
+     */
+    public void saveWeight(String username, float weight) {
+        if (TextUtils.isEmpty(username)) {
+            return;
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(WEIGHT_PREFIX + username, weight);
+        editor.apply();
+    }
+    
+    /**
+     * 获取用户体重
+     * @param username 用户名
+     * @return 体重（公斤），如果未设置则返回0
+     */
+    public float getWeight(String username) {
+        if (TextUtils.isEmpty(username)) {
+            return 0f;
+        }
+        return sharedPreferences.getFloat(WEIGHT_PREFIX + username, 0f);
+    }
+    
+    /**
+     * 获取当前用户的身高
+     * @return 身高（厘米）
+     */
+    public float getCurrentUserHeight() {
+        String username = getCurrentUsername();
+        return getHeight(username);
+    }
+    
+    /**
+     * 获取当前用户的体重
+     * @return 体重（公斤）
+     */
+    public float getCurrentUserWeight() {
+        String username = getCurrentUsername();
+        return getWeight(username);
+    }
+    
+    /**
+     * 保存当前用户的身高
+     * @param height 身高（厘米）
+     */
+    public void saveCurrentUserHeight(float height) {
+        String username = getCurrentUsername();
+        saveHeight(username, height);
+    }
+    
+    /**
+     * 保存当前用户的体重
+     * @param weight 体重（公斤）
+     */
+    public void saveCurrentUserWeight(float weight) {
+        String username = getCurrentUsername();
+        saveWeight(username, weight);
     }
 }

@@ -91,8 +91,6 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-
-
                     <!-- 功能菜单 -->
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
@@ -105,6 +103,96 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="8dp">
+
+                            <!-- 基础信息菜单项 -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/menu_basic_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="0dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:padding="16dp"
+                                    android:gravity="center_vertical">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_person"
+                                        android:tint="@color/sport_orange"
+                                        android:layout_marginEnd="16dp" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="基础信息"
+                                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                                            android:textColor="?attr/colorOnSurface" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal"
+                                            android:layout_marginTop="4dp">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="身高："
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                            <TextView
+                                                android:id="@+id/tv_height"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="--"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                                android:textColor="@color/sport_orange"
+                                                android:layout_marginEnd="16dp" />
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="体重："
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                                            <TextView
+                                                android:id="@+id/tv_weight"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="--"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                                                android:textColor="@color/sport_orange" />
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:src="@drawable/ic_chevron_right"
+                                        android:tint="?attr/colorOnSurfaceVariant" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
 
                             <!-- 查看跑步记录 -->
                             <com.google.android.material.card.MaterialCardView

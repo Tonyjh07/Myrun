@@ -73,11 +73,16 @@ public class RankingFragment extends Fragment {
      * 加载排行榜数据
      */
     private void loadRankingData() {
-        if (rankingManager == null && getContext() != null) {
-            rankingManager = RankingManager.getInstance(getContext());
-        }
-        
-        List<RankingRecord> rankingList = rankingManager.getRankingList();
+        try {
+            if (rankingManager == null && getContext() != null) {
+                rankingManager = RankingManager.getInstance(getContext());
+            }
+            
+            if (rankingManager == null) {
+                return;
+            }
+            
+            List<RankingRecord> rankingList = rankingManager.getRankingList();
         
         if (rankingList == null || rankingList.isEmpty()) {
             // 显示空状态
@@ -113,6 +118,9 @@ public class RankingFragment extends Fragment {
             }
             
             updateStatistics(totalUsers, totalDistance, totalRuns);
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

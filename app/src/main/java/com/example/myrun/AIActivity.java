@@ -56,8 +56,8 @@ public class AIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // 设置系统状态栏让出空间
-        StatusBarUtil.setSystemStatusBar(this);
+        // 设置沉浸式状态栏
+        StatusBarUtil.setImmersiveStatusBar(this);
         setContentView(R.layout.activity_aiactivity);
         
         // 为根布局设置系统栏内边距

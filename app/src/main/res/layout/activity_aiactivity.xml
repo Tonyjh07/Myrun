@@ -16,7 +16,7 @@
         android:background="?attr/colorPrimary"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="AI助手"
-        app:titleTextColor="@android:color/white"
+        app:titleTextColor="#000000"
         app:menu="@menu/ai_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

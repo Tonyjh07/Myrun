@@ -37,7 +37,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/ic_location_on"
-                    android:tint="@color/keep_green"
+                    android:tint="@color/keep_blue"
                     android:alpha="0.3"
                     android:layout_marginBottom="16dp" />
 
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="准备开始跑步"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="@color/keep_green_dark"
+                    android:textColor="@color/keep_blue_dark"
                     android:textStyle="bold" />
 
                 <TextView
@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:text="点击下方按钮开始记录"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -63,7 +64,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- 开始跑步按钮 - Keep风格大按钮 -->
+    <!-- 开始跑步按钮 - Keep风格大按钮，使用蓝色主题 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start_run"
         android:layout_width="0dp"
@@ -73,8 +74,8 @@
         android:text="开始跑步"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/keep_green"
+        android:textColor="#000000"
+        android:backgroundTint="@color/keep_blue"
         app:cornerRadius="20dp"
         app:elevation="12dp"
         app:icon="@drawable/ic_play_arrow"

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/keep_background"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:paddingBottom="80dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,15 +14,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Keep风格欢迎卡片 -->
+        <!-- Keep风格欢迎卡片 - 使用多彩渐变 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="@color/keep_green"
-            android:background="@drawable/keep_gradient_bg">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            android:background="@drawable/bg_gradient_indigo">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,7 +35,8 @@
                     android:layout_height="wrap_content"
                     android:text="今天也要加油！"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="#000000"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp" />
 
@@ -43,8 +45,9 @@
                     android:layout_height="wrap_content"
                     android:text="开始你的跑步之旅"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    android:textColor="@android:color/white"
-                    android:alpha="0.9" />
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -56,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/white"
             app:strokeWidth="0dp">
 
@@ -71,7 +74,8 @@
                     android:layout_height="wrap_content"
                     android:text="今日数据"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                    android:textColor="@color/keep_green_dark"
+                    android:textColor="#000000"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="20dp" />
 
@@ -96,7 +100,8 @@
                             android:layout_height="wrap_content"
                             android:text="0.0"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                            android:textColor="@color/keep_green"
+                            android:textColor="@color/keep_cyan"
+                            android:textSize="32sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -104,7 +109,9 @@
                             android:layout_height="wrap_content"
                             android:text="公里"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -125,6 +132,7 @@
                             android:text="00:00"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
                             android:textColor="@color/keep_blue"
+                            android:textSize="32sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -132,7 +140,9 @@
                             android:layout_height="wrap_content"
                             android:text="时长"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -152,7 +162,8 @@
                             android:layout_height="wrap_content"
                             android:text="--:--"
                             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                            android:textColor="@color/keep_orange"
+                            android:textColor="@color/keep_pink"
+                            android:textSize="32sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -160,7 +171,9 @@
                             android:layout_height="wrap_content"
                             android:text="配速"
                             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
@@ -180,14 +193,14 @@
             android:text="开始跑步"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="#000000"
             android:backgroundTint="@color/keep_green"
             app:cornerRadius="20dp"
             app:icon="@drawable/ic_play_arrow"
             app:iconGravity="textStart"
             app:iconPadding="16dp"
-            app:iconTint="@android:color/white"
-            app:elevation="8dp"
+            app:iconTint="#000000"
+            app:elevation="0dp"
             style="@style/Widget.Material3.Button" />
 
         <!-- 最近记录卡片 -->
@@ -195,7 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/white"
             app:strokeWidth="0dp">
 
@@ -211,7 +224,8 @@
                     android:layout_marginBottom="16dp"
                     android:text="最近记录"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                    android:textColor="@color/keep_green_dark"
+                    android:textColor="#000000"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <!-- 跑步记录列表 -->
@@ -227,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="查看全部记录"
-                    android:textColor="@color/keep_green"
+                    android:textColor="@color/keep_teal"
                     android:textStyle="bold"
                     style="@style/Widget.Material3.Button.TextButton"
                     app:cornerRadius="12dp" />

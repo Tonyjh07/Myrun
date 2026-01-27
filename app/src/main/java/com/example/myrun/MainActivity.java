@@ -1,11 +1,15 @@
 package com.example.myrun;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +27,15 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigation;
     private MaterialToolbar mToolbar;
     private FloatingActionButton mFabAI;
+    private CoordinatorLayout mCoordinatorLayout;
+    
+    // FAB拖拽相关
+    private float mFabX;
+    private float mFabY;
+    private float mTouchX;
+    private float mTouchY;
+    private boolean mIsDragging = false;
+    private static final float CLICK_THRESHOLD = 10f; // 点击阈值，小于此距离认为是点击
 
     // Fragment相关
     private FragmentManager fragmentManager;
@@ -60,6 +73,19 @@ public class MainActivity extends AppCompatActivity {
             mBottomNavigation = findViewById(R.id.bottom_navigation);
             mToolbar = findViewById(R.id.toolbar);
             mFabAI = findViewById(R.id.fab_ai);
+            mCoordinatorLayout = findViewById(R.id.main_container);
+            
+            // 确保底部导航栏在最上层，可以接收点击事件
+            if (mBottomNavigation != null) {
+                mBottomNavigation.bringToFront();
+                mBottomNavigation.setClickable(true);
+                mBottomNavigation.setFocusable(true);
+                // 确保所有菜单项都可见
+                mBottomNavigation.setLabelVisibilityMode(com.google.android.material.bottomnavigation.LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+            }
+            
+            // 设置FAB为可拖拽
+            setupDraggableFAB();
 
             // 初始化Fragment
             initFragments();
@@ -166,9 +192,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     } else if (itemId == R.id.navigation_profile) {
                         // 切换到个人中心Fragment
+                        if (profileFragment == null) {
+                            profileFragment = new ProfileFragment();
+                        }
                         if (profileFragment != null) {
                             switchFragment(profileFragment);
                             updateToolbarTitle("我的");
+                        } else {
+                            ToastUtil.showMsg(MainActivity.this, "无法加载个人中心");
                         }
                         return true;
                     }
@@ -236,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void switchFragment(Fragment fragment) {
         if (fragment == null || fragmentManager == null) {
+            ToastUtil.showMsg(this, "Fragment为空或FragmentManager未初始化");
             return;
         }
         
@@ -270,9 +302,16 @@ public class MainActivity extends AppCompatActivity {
             }
             
             transaction.commitAllowingStateLoss();
+            
+            // 确保Fragment容器可见
+            View fragmentContainer = findViewById(R.id.fragment_container);
+            if (fragmentContainer != null) {
+                fragmentContainer.setVisibility(View.VISIBLE);
+                fragmentContainer.bringToFront();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            ToastUtil.showMsg(this, "切换页面失败");
+            ToastUtil.showMsg(this, "切换页面失败: " + e.getMessage());
         }
     }
 
@@ -325,16 +364,177 @@ public class MainActivity extends AppCompatActivity {
             mFabAI.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        // 跳转到AIActivity
-                        Intent intent = new Intent(MainActivity.this, AIActivity.class);
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        ToastUtil.showMsg(MainActivity.this, "打开AI功能失败");
+                    // 只有在非拖拽状态下才响应点击
+                    if (!mIsDragging) {
+                        try {
+                            // 跳转到AIActivity
+                            Intent intent = new Intent(MainActivity.this, AIActivity.class);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            ToastUtil.showMsg(MainActivity.this, "打开AI功能失败");
+                        }
                     }
                 }
             });
+        }
+    }
+    
+    /**
+     * 设置FAB为可拖拽
+     */
+    private void setupDraggableFAB() {
+        if (mFabAI == null || mCoordinatorLayout == null) {
+            return;
+        }
+        
+        // 恢复FAB位置
+        restoreFabPosition();
+        
+        mFabAI.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFabAI.getLayoutParams();
+                
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // 记录初始触摸位置和FAB位置
+                        mTouchX = event.getRawX();
+                        mTouchY = event.getRawY();
+                        mFabX = params.leftMargin;
+                        mFabY = params.topMargin;
+                        mIsDragging = false;
+                        return true;
+                        
+                    case MotionEvent.ACTION_MOVE:
+                        // 计算移动距离
+                        float dx = event.getRawX() - mTouchX;
+                        float dy = event.getRawY() - mTouchY;
+                        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+                        
+                        // 如果移动距离超过阈值，认为是拖拽
+                        if (distance > CLICK_THRESHOLD) {
+                            mIsDragging = true;
+                            
+                            // 计算新位置
+                            float newX = mFabX + dx;
+                            float newY = mFabY + dy;
+                            
+                            // 获取屏幕尺寸
+                            int screenWidth = mCoordinatorLayout.getWidth();
+                            int screenHeight = mCoordinatorLayout.getHeight();
+                            int fabWidth = mFabAI.getWidth();
+                            int fabHeight = mFabAI.getHeight();
+                            
+                            // 限制FAB在屏幕范围内
+                            newX = Math.max(0, Math.min(newX, screenWidth - fabWidth));
+                            newY = Math.max(0, Math.min(newY, screenHeight - fabHeight));
+                            
+                            // 移除gravity，使用绝对定位
+                            params.gravity = 0;
+                            params.setMargins((int) newX, (int) newY, 0, 0);
+                            mFabAI.setLayoutParams(params);
+                        }
+                        return true;
+                        
+                    case MotionEvent.ACTION_UP:
+                        // 保存FAB位置
+                        if (mIsDragging) {
+                            saveFabPosition();
+                        }
+                        mIsDragging = false;
+                        return false; // 让点击事件继续传递
+                        
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+    
+    /**
+     * 保存FAB位置
+     */
+    private void saveFabPosition() {
+        if (mFabAI == null || mCoordinatorLayout == null) {
+            return;
+        }
+        
+        try {
+            SharedPreferences prefs = getSharedPreferences("fab_position", MODE_PRIVATE);
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFabAI.getLayoutParams();
+            prefs.edit()
+                    .putFloat("fab_x", params.leftMargin)
+                    .putFloat("fab_y", params.topMargin)
+                    .apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 恢复FAB位置
+     */
+    private void restoreFabPosition() {
+        if (mFabAI == null || mCoordinatorLayout == null) {
+            return;
+        }
+        
+        try {
+            SharedPreferences prefs = getSharedPreferences("fab_position", MODE_PRIVATE);
+            float savedX = prefs.getFloat("fab_x", -1);
+            float savedY = prefs.getFloat("fab_y", -1);
+            
+            if (savedX >= 0 && savedY >= 0) {
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mFabAI.getLayoutParams();
+                int screenWidth = mCoordinatorLayout.getWidth();
+                int screenHeight = mCoordinatorLayout.getHeight();
+                
+                // 如果屏幕尺寸还未确定，延迟恢复
+                if (screenWidth == 0 || screenHeight == 0) {
+                    mFabAI.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            restoreFabPosition();
+                        }
+                    });
+                    return;
+                }
+                
+                int fabWidth = mFabAI.getWidth();
+                int fabHeight = mFabAI.getHeight();
+                
+                // 如果FAB尺寸还未确定，延迟恢复
+                if (fabWidth == 0 || fabHeight == 0) {
+                    mFabAI.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            restoreFabPosition();
+                        }
+                    });
+                    return;
+                }
+                
+                // 确保位置在屏幕范围内
+                savedX = Math.max(0, Math.min(savedX, screenWidth - fabWidth));
+                savedY = Math.max(0, Math.min(savedY, screenHeight - fabHeight));
+                
+                // 移除gravity，使用绝对定位
+                params.gravity = 0;
+                params.setMargins((int) savedX, (int) savedY, 0, 0);
+                mFabAI.setLayoutParams(params);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        // 当窗口获得焦点时恢复FAB位置（此时可以获取正确的屏幕尺寸）
+        if (hasFocus && mFabAI != null) {
+            restoreFabPosition();
         }
     }
 }

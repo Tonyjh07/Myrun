@@ -1,73 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/keep_background"
     tools:context=".MainActivity">
 
-    <!-- 主界面的布局 -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <!-- AppBarLayout with Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/keep_green"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/keep_green"
+            app:title="跑步记录"
+            app:titleTextColor="#000000"
+            app:navigationIcon="@drawable/ic_menu"
+            app:navigationIconTint="#FFFFFF" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Fragment Container - 放在底部导航栏之前，确保不被遮挡 -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/keep_background">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="56dp"
+        android:clipToPadding="false" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="0dp">
+    <!-- Bottom Navigation - 确保在最上层，显示所有4个导航项 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/bottom_nav_background"
+        android:elevation="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:minHeight="64dp"
+        app:itemIconTint="@color/bottom_nav_icon_selector"
+        app:itemTextColor="@color/bottom_nav_item_selector"
+        app:itemBackground="@android:color/transparent"
+        app:labelVisibilityMode="labeled"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemRippleColor="@android:color/transparent"
+        app:itemTextAppearanceActive="@style/TextAppearance.Material3.LabelSmall"
+        app:itemTextAppearanceInactive="@style/TextAppearance.Material3.LabelSmall"
+        app:menu="@menu/bottom_navigation_menu" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/keep_green"
-                app:title="跑步记录"
-                app:titleTextColor="@android:color/white"
-                app:menu="@menu/run_menu"
-                android:elevation="4dp" />
+    <!-- AI Floating Action Button - 可拖拽移动 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_ai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:layout_marginTop="72dp"
+        android:src="@drawable/ic_ai"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/keep_green"
+        app:tint="#FFFFFF"
+        app:elevation="8dp" />
 
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <!-- Fragment容器 -->
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_ai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="108dp"
-                android:contentDescription="AI功能"
-                android:src="@drawable/ic_info"
-                app:backgroundTint="@color/keep_green"
-                app:elevation="8dp"
-                app:rippleColor="@android:color/white"
-                app:tint="@android:color/white" />
-        </FrameLayout>
-
-        <!-- 底部导航 -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            android:elevation="8dp"
-            app:itemIconTint="@color/bottom_nav_icon_selector"
-            app:itemTextColor="@color/bottom_nav_item_selector"
-            app:itemBackground="@android:color/transparent"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_menu" />
-
-        <!-- AI功能FAB -->
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 夜间模式配色方案 -->
-    <!-- 主色调 - 深灰 -->
-    <color name="primary">#1C1B1F</color>
-    <color name="primary_dark">#141218</color>
-    <color name="primary_light">#49454F</color>
-    <color name="on_primary">#E6E1E5</color>
+    <!-- 夜间模式运动主题配色方案 -->
+    <!-- 主色调 - 深绿色 -->
+    <color name="primary">#009624</color>
+    <color name="primary_dark">#006C1A</color>
+    <color name="primary_light">#4CAF50</color>
+    <color name="on_primary">#FFFFFF</color>
     
-    <!-- 副色调 - 中灰 -->
-    <color name="secondary">#938F99</color>
-    <color name="secondary_dark">#7A757F</color>
-    <color name="secondary_light">#AEA9B4</color>
-    <color name="on_secondary">#1C1B1F</color>
+    <!-- 副色调 - 深橙色 -->
+    <color name="secondary">#E64A19</color>
+    <color name="secondary_dark">#BF360C</color>
+    <color name="secondary_light">#FF8A65</color>
+    <color name="on_secondary">#FFFFFF</color>
     
-    <!-- 第三色调 - 浅灰 -->
-    <color name="tertiary">#CAC4D0</color>
-    <color name="tertiary_dark">#B5AFC8</color>
-    <color name="tertiary_light">#E8E2EC</color>
-    <color name="on_tertiary">#1C1B1F</color>
+    <!-- 第三色调 - 深蓝色 -->
+    <color name="tertiary">#1976D2</color>
+    <color name="tertiary_dark">#1565C0</color>
+    <color name="tertiary_light">#64B5F6</color>
+    <color name="on_tertiary">#FFFFFF</color>
     
     <!-- 背景色 -->
-    <color name="background">#1C1B1F</color>
-    <color name="background_variant">#141218</color>
+    <color name="background">#121212</color>
+    <color name="background_variant">#1E1E1E</color>
     <color name="surface">#1C1B1F</color>
-    <color name="surface_variant">#49454F</color>
-    <color name="on_background">#E6E1E5</color>
-    <color name="on_surface">#E6E1E5</color>
-    <color name="on_surface_variant">#CAC4D0</color>
+    <color name="surface_variant">#2D2D2D</color>
+    <color name="on_background">#E0E0E0</color>
+    <color name="on_surface">#E0E0E0</color>
+    <color name="on_surface_variant">#B0B0B0</color>
     
     <!-- 分割线颜色 -->
-    <color name="outline">#938F99</color>
-    <color name="outline_variant">#49454F</color>
+    <color name="outline">#424242</color>
+    <color name="outline_variant">#303030</color>
     
     <!-- 状态栏和导航栏 -->
     <color name="status_bar">#141218</color>
     <color name="navigation_bar">#141218</color>
     
     <!-- 强调色 - 用于重要按钮和选中状态 -->
-    <color name="accent">#E6E1E5</color>
-    <color name="accent_light">#CAC4D0</color>
-    <color name="on_accent">#1C1B1F</color>
+    <color name="accent">#FF9800</color>
+    <color name="accent_light">#FFB74D</color>
+    <color name="accent_dark">#F57C00</color>
+    <color name="on_accent">#FFFFFF</color>
     
     <!-- 选中状态颜色 -->
-    <color name="selected_background">#49454F</color>
-    <color name="selected_text">#E6E1E5</color>
+    <color name="selected_background">#2E7D32</color>
+    <color name="selected_text">#81C784</color>
     
     <!-- 未选中状态颜色 -->
-    <color name="unselected_background">#2B2930</color>
-    <color name="unselected_text">#CAC4D0</color>
+    <color name="unselected_background">#2D2D2D</color>
+    <color name="unselected_text">#999999</color>
     
     <!-- 错误色 -->
     <color name="error">#F2B8B5</color>

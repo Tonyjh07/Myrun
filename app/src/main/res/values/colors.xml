@@ -4,7 +4,7 @@
     <!-- 主色调 - 活力绿色（Keep风格） -->
     <color name="primary">#00C853</color>
     <color name="primary_dark">#009624</color>
-    <color name="primary_light">#5EFC82</color>
+    <color name="primary_light">#B8FFCB</color>
     <color name="on_primary">#FFFFFF</color>
     
     <!-- 副色调 - 活力橙色 -->
@@ -16,7 +16,7 @@
     <!-- 第三色调 - 活力蓝色 -->
     <color name="tertiary">#2196F3</color>
     <color name="tertiary_dark">#1976D2</color>
-    <color name="tertiary_light">#64B5F6</color>
+    <color name="tertiary_light">#B3E5FC</color>
     <color name="on_tertiary">#FFFFFF</color>
     
     <!-- 背景色 -->
@@ -46,6 +46,9 @@
     <color name="selected_background">#E8F5E9</color>
     <color name="selected_text">#00C853</color>
     
+    <!-- 更淡的绿色背景 -->
+    <color name="background_light_green">#F1F8E9</color>
+    
     <!-- 未选中状态颜色 -->
     <color name="unselected_background">#F5F5F5</color>
     <color name="unselected_text">#999999</color>
@@ -65,9 +68,9 @@
     <color name="md_tertiary">@color/tertiary</color>
     <color name="md_tertiary_container">@color/tertiary_light</color>
     <color name="md_on_tertiary_container">@color/on_tertiary</color>
-    <color name="md_surface">@color/surface</color>
+    <color name="md_surface">@color/background_light_green</color>
     <color name="md_surface_variant">@color/surface_variant</color>
-    <color name="md_background">@color/background</color>
+    <color name="md_background">@color/background_light_green</color>
     <color name="md_error">@color/error</color>
     <color name="md_error_container">@color/error_container</color>
     <color name="md_on_primary">@color/on_primary</color>
@@ -83,8 +86,8 @@
     <!-- 底部导航专用配色 -->
     <color name="bottom_nav_background">#F0F0F0</color>
     <color name="bottom_nav_item_default">@color/unselected_text</color>
-    <color name="bottom_nav_item_selected">@color/selected_text</color>
-    <color name="bottom_nav_item_background">@color/selected_background</color>
+    <color name="bottom_nav_item_selected">@color/primary</color>
+    <color name="bottom_nav_item_background">@color/primary_light</color>
     
     <!-- 运动主题兼容配色（转换为灰阶） -->
     <color name="sport_orange">@color/tertiary</color>
@@ -99,7 +102,7 @@
     <color name="sport_gradient_end">@color/tertiary</color>
     
     <!-- 保留原有颜色用于兼容性 -->
-    <color name="colorBlack">@color/primary</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorWhite">@color/background</color>
     <color name="colorOrange">@color/tertiary</color>
     <color name="colorDeepBlue">@color/secondary</color>

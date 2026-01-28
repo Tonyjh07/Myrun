@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    android:background="@color/background_light_green"
     tools:context=".AIActivity">
 
     <!-- 工具栏 -->
@@ -16,7 +17,7 @@
         android:background="?attr/colorPrimary"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="AI助手"
-        app:titleTextColor="@android:color/white"
+        app:titleTextColor="?attr/colorOnPrimary"
         app:menu="@menu/ai_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="0dp"
-        android:background="?attr/colorSurfaceVariant"
+        android:background="@color/tertiary_light"
         android:minHeight="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

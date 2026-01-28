@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/md_background"
+    android:background="@color/background_light_green"
     tools:context=".RankingFragment">
 
     <!-- 顶部统计卡片 -->
@@ -15,7 +15,7 @@
         android:layout_margin="16dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="6dp"
-        app:cardBackgroundColor="@color/sport_gradient_start"
+        app:cardBackgroundColor="@color/tertiary_light"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     tools:text="8" />
 
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="参与人数"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:alpha="0.9" />
 
             </LinearLayout>
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     tools:text="502.3" />
 
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="总里程(km)"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:alpha="0.9" />
 
             </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     tools:text="64" />
 
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="总次数"
                     android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlack"
                     android:alpha="0.9" />
 
             </LinearLayout>
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:text="🏆 排行榜"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:textColor="@color/sport_orange_dark"
+        android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:text="暂无排行榜数据"
             android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColor="@color/colorBlack"
             android:layout_marginTop="32dp" />
 
     </LinearLayout>

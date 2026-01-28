@@ -8,7 +8,7 @@
         <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
         <item name="colorSecondary">@color/md_secondary</item>
         <item name="colorOnSecondary">@color/md_on_secondary</item>
-        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorSecondaryContainer">@color/tertiary_light</item>
         <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
         <item name="colorTertiary">@color/md_tertiary</item>
         <item name="colorOnTertiary">@color/md_on_tertiary</item>

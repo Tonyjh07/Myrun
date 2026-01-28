@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/background_light_green"
     tools:context=".RegisterActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -51,7 +51,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/surface">
+                app:cardBackgroundColor="@color/tertiary_light">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/surface">
+                app:cardBackgroundColor="@color/tertiary_light">
 
                 <LinearLayout
                     android:layout_width="match_parent"

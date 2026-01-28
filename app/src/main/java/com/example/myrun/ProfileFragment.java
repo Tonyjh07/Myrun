@@ -90,8 +90,7 @@ public class ProfileFragment extends Fragment {
         View menuRunRecords = view.findViewById(R.id.menu_run_records);
         if (menuRunRecords != null) {
             menuRunRecords.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), RunRecordsActivity.class);
-                startActivity(intent);
+                ToastUtil.showMsg(getActivity(), "查看记录功能开发中...");
             });
         }
         

@@ -163,6 +163,11 @@
     <color name="keep_surface">#FFFFFF</color>
     <color name="keep_divider">#E0E0E0</color>
     
+    <!-- 文本颜色 -->
+    <color name="colorTextPrimary">@color/on_surface</color>
+    <color name="colorTextSecondary">@color/on_surface_variant</color>
+    <color name="colorTextHint">@color/secondary</color>
+    
     <!-- 保留原有颜色用于兼容性 -->
     <color name="colorBlack">@color/primary</color>
     <color name="colorWhite">@color/background</color>

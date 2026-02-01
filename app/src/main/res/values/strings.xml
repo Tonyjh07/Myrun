@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MyRun</string>
+    <string name="app_icon">@mipmap/ic_launcher</string>
     <string name="welcome_title">欢迎使用 MyRun</string>
     <string name="username_hint">用户名</string>
     <string name="password_hint">密码</string>
@@ -19,4 +20,14 @@
     <string name="run">跑步</string>
     <string name="ranking">排行榜</string>
     <string name="my_profile">我的</string>
+    <!-- 关于界面字符串 -->
+    <string name="about_title">关于</string>
+    <string name="about_app_name">MyRun</string>
+    <string name="about_version">版本 1.3.5</string>
+    <string name="about_description">MyRun是一款专为大学生设计的AI运动健康助手，深度融合校园场景，提供个性化运动计划、实时姿态矫正与隐私优先的健康管理，通过情感化设计陪伴学生轻松养成运动习惯。</string>
+    <string name="about_app_info">应用信息</string>
+    <string name="about_developer">开发者</string>
+    <string name="about_developer_name">援进组</string>
+    <string name="about_update_date">更新日期</string>
+    <string name="about_update_date_value">2026年2月</string>
 </resources>
